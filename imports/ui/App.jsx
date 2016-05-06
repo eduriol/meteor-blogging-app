@@ -20,7 +20,7 @@ export default class App extends Component {
  
   render() {
     return (
-      <div className="container">
+      <div>
         <header>
           <h1>My blog</h1>
         </header>

@@ -1,1 +1,21 @@
 /* CSS declarations go here */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    max-width: 1000px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 1.5em;
+    margin-top: 2em;
+}
+
+ul {
+    list-style-type: none;    
+}
+
+p {
+    position: relative;
+    padding: 15px;
+}

@@ -4,10 +4,10 @@ import React, { Component, PropTypes } from 'react';
 export default class Post extends Component {
   render() {
     return (
-        <div>
+        <li>
             <p>{this.props.post.title}</p>
             <p>{this.props.post.content}</p>
-        </div>
+        </li>
     );
   }
 }
