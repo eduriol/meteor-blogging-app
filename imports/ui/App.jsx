@@ -1,19 +1,33 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import { createContainer } from 'meteor/react-meteor-data';
+
+import { Posts } from '../api/posts.js';
  
 import Post from './Post.jsx';
  
 // App component - represents the whole app
-export default class App extends Component {
-  getPosts() {
-    return [
-      { _id: 1, title: 'Post 1', content: 'This is post 1' },
-      { _id: 2, title: 'Post 2', content: 'This is post 2' },
-      { _id: 3, title: 'Post 3', content: 'This is post 3' },
-    ];
-  }
+class App extends Component {
+  handleSubmit(event) {
+    event.preventDefault();
  
+    // Find the post title & content via the React ref
+    const title = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
+    const content = ReactDOM.findDOMNode(this.refs.contentInput).value.trim();
+ 
+    Posts.insert({
+      title,
+      content,
+      createdAt: new Date(), // current time
+    });
+ 
+    // Clear form
+    ReactDOM.findDOMNode(this.refs.titleInput).value = '';
+    ReactDOM.findDOMNode(this.refs.contentInput).value = '';
+  }  
+  
   renderPosts() {
-    return this.getPosts().map((post) => (
+    return this.props.posts.map((post) => (
       <Post key={post._id} post={post} />
     ));
   }
@@ -23,8 +37,16 @@ export default class App extends Component {
       <div>
         <header>
           <h1>My blog</h1>
+          <form onSubmit={this.handleSubmit.bind(this)} >
+            <p>
+              <input type="text" ref="titleInput" placeholder="Type to add the post title"/>
+            </p>
+            <p>
+              <textarea ref="contentInput" placeholder="Type to add the post content"/>
+            </p>
+            <input type="submit"/>
+          </form>
         </header>
- 
         <ul>
           {this.renderPosts()}
         </ul>
@@ -32,3 +54,13 @@ export default class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  posts: PropTypes.array.isRequired,
+};
+ 
+export default createContainer(() => {
+  return {
+    posts: Posts.find({}, { sort: { createdAt: -1 } }).fetch(),
+  };
+}, App);
