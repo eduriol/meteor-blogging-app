@@ -1,11 +1,22 @@
 import React, { Component, PropTypes } from 'react';
+
+import { Posts } from '../api/posts.js';
  
 // Post component - represents a single blog item
 export default class Post extends Component {
+  deleteThisPost() {
+    Posts.remove(this.props.post._id);
+  }
+  
   render() {
     return (
         <li>
-            <p>{this.props.post.title}</p>
+            <p>
+              <button className="delete" onClick={this.deleteThisPost.bind(this)}>
+                &times;
+              </button>
+              {this.props.post.title}
+            </p>
             <p>{this.props.post.content}</p>
         </li>
     );

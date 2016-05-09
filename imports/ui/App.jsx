@@ -15,12 +15,15 @@ class App extends Component {
     const title = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
     const content = ReactDOM.findDOMNode(this.refs.contentInput).value.trim();
  
-    Posts.insert({
+    const post = {
       title,
       content,
       createdAt: new Date(), // current time
-    });
- 
+    };
+    
+    Posts.schema.validate(post);
+    Posts.insert(post);
+    
     // Clear form
     ReactDOM.findDOMNode(this.refs.titleInput).value = '';
     ReactDOM.findDOMNode(this.refs.contentInput).value = '';
