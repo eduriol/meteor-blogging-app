@@ -19,7 +19,7 @@ export default class Post extends Component {
     return (
         <li>
             <p>
-              {this.props.post.title}
+              <strong>{Meteor.users.findOne(this.props.post.owner).username}</strong>: {this.props.post.title}
               <button className="delete" onClick={this.deleteThisPost.bind(this)}>
                 &times;
               </button>
@@ -41,4 +41,5 @@ Post.propTypes = {
   // This component gets the post to display through a React prop.
   // We can use propTypes to indicate it is required
   post: PropTypes.object.isRequired,
+  postsCount: PropTypes.number.isRequired,
 };

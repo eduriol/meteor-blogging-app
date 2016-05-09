@@ -22,3 +22,5 @@ insecure                # Allow all DB writes from clients (for prototyping)
 react-meteor-data
 aldeed:simple-schema
 aldeed:collection2
+accounts-ui
+accounts-password

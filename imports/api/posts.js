@@ -9,6 +9,7 @@ Posts.schema = new SimpleSchema({
   content: { type: String },
   createdAt: { type: Date },
   isPublic: { type: Boolean },
+  owner: { type: String },
 });
 
 Posts.attachSchema(Posts.schema);
