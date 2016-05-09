@@ -19,6 +19,7 @@ class App extends Component {
       title,
       content,
       createdAt: new Date(), // current time
+      isPublic: false,
     };
     
     Posts.schema.validate(post);
