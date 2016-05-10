@@ -1,25 +1,25 @@
 import React, { Component, PropTypes } from 'react';
-
+import { Meteor } from 'meteor/meteor';
 import { Posts } from '../api/posts.js';
 
 // Post component - represents a single blog item
 export default class Post extends Component {
   togglePublic() {
-    // Set the published property to the opposite of its current value
-    Posts.update(this.props.post._id, {
-      $set: { isPublic: !this.props.post.isPublic },
-    });
+    Meteor.call('posts.makePublic', this.props.post._id, !this.props.post.isPublic);
   }
 
   deleteThisPost() {
-    Posts.remove(this.props.post._id);
+    Meteor.call('posts.remove', this.props.post._id);
   }
 
   render() {
     return (
         <li>
             <p>
-              <strong>{Meteor.users.findOne(this.props.post.owner).username}</strong>: {this.props.post.title}
+              <span>
+                {this.props.post.title}
+                &nbsp;(written by {Meteor.users.findOne(this.props.post.owner).username})
+              </span>
               <button className="delete" onClick={this.deleteThisPost.bind(this)}>
                 &times;
               </button>

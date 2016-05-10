@@ -17,16 +17,7 @@ class App extends Component {
     const title = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
     const content = ReactDOM.findDOMNode(this.refs.contentInput).value.trim();
  
-    const post = {
-      title,
-      content,
-      createdAt: new Date(), // current time
-      isPublic: false,
-      owner: Meteor.userId(),           // _id of logged in user
-    };
-    
-    Posts.schema.validate(post);
-    Posts.insert(post);
+    Meteor.call('posts.insert', title, content);
     
     // Clear form
     ReactDOM.findDOMNode(this.refs.titleInput).value = '';
