@@ -1,15 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+
 import { Posts } from '../api/posts.js';
 
 // Post component - represents a single blog item
 export default class Post extends Component {
-  togglePublic() {
-    Meteor.call('posts.makePublic', this.props.post._id, !this.props.post.isPublic);
-  }
-
   deleteThisPost() {
     Meteor.call('posts.remove', this.props.post._id);
+  }
+  
+  toggleChecked() {
+    // Set the checked property to the opposite of its current value
+    Meteor.call('posts.setChecked', this.props.post._id, !this.props.post.checked);
   }
 
   render() {
@@ -23,12 +25,11 @@ export default class Post extends Component {
               <button className="delete" onClick={this.deleteThisPost.bind(this)}>
                 &times;
               </button>
-              make public?
               <input
                 type="checkbox"
-                readonly
-                isPublic={this.props.post.isPublic}
-                onClick={this.togglePublic.bind(this)}
+                readOnly
+                checked={this.props.post.checked}
+                onClick={this.toggleChecked.bind(this)}
               />
             </p>
             <p>{this.props.post.content}</p>

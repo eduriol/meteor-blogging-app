@@ -61,7 +61,7 @@ App.propTypes = {
   postsCount: PropTypes.number.isRequired,
   currentUser: PropTypes.object,
 };
- 
+
 export default createContainer(() => {
   return {
     posts: Posts.find({}, { sort: { createdAt: -1 } }).fetch(),
