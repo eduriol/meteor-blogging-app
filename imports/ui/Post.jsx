@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import { Posts } from '../api/posts.js';
-
 // Post component - represents a single blog item
 export default class Post extends Component {
   deleteThisPost() {
@@ -10,7 +8,6 @@ export default class Post extends Component {
   }
   
   toggleIsPublic() {
-    // Set the checked property to the opposite of its current value
     Meteor.call('posts.setIsPublic', this.props.post._id, !this.props.post.isPublic);
   }
 

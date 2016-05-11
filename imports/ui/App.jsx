@@ -4,38 +4,70 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import { Posts } from '../api/posts.js';
- 
+
 import Post from './Post.jsx';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
- 
+
 // App component - represents the whole app
 class App extends Component {
+  
+  constructor(props) {
+    super(props);
+ 
+    this.state = {
+      hidePrivate: false,
+    };
+  }
+  
   handleSubmit(event) {
     event.preventDefault();
- 
+
     // Find the post title & content via the React ref
     const title = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
     const content = ReactDOM.findDOMNode(this.refs.contentInput).value.trim();
- 
+
     Meteor.call('posts.insert', title, content);
-    
+
     // Clear form
     ReactDOM.findDOMNode(this.refs.titleInput).value = '';
     ReactDOM.findDOMNode(this.refs.contentInput).value = '';
-  }  
+  }
   
+  toggleHidePrivate() {
+    this.setState({
+      hidePrivate: !this.state.hidePrivate,
+    });
+  }
+
   renderPosts() {
-    return this.props.posts.map((post) => (
+
+    let filteredPosts = this.props.posts;
+    if (this.state.hidePrivate) {
+      filteredPosts = filteredPosts.filter(post => post.isPublic);
+    }
+    return filteredPosts.map((post) => (
       <Post key={post._id} post={post} />
     ));
   }
- 
+
   render() {
     return (
       <div>
         <header>
           <h1>My blog  ({this.props.postsCount} posts)</h1>
           <AccountsUIWrapper />
+          
+          <label>
+            <input
+              type="checkbox"
+              readOnly
+              checked={this.state.hidePrivate}
+              onClick={this.toggleHidePrivate.bind(this)}
+            />
+            Hide private posts
+          </label>
+
+          
           { this.props.currentUser ?
             <form onSubmit={this.handleSubmit.bind(this)} >
               <p>
@@ -63,6 +95,8 @@ App.propTypes = {
 };
 
 export default createContainer(() => {
+  Meteor.subscribe('posts');
+
   return {
     posts: Posts.find({}, { sort: { createdAt: -1 } }).fetch(),
     postsCount: Posts.find({}).count(),

@@ -15,6 +15,12 @@ Posts.schema = new SimpleSchema({
 
 Posts.attachSchema(Posts.schema);
 
+if (Meteor.isServer) {
+  Meteor.publish('posts', function postsPublication() {
+    return Posts.find();
+  });
+}
+
 Meteor.methods({
   'posts.insert'(title, content) {
     check(title, String);
