@@ -9,7 +9,7 @@ Posts.schema = new SimpleSchema({
   title: { type: String },
   content: { type: String },
   createdAt: { type: Date },
-  checked: {type: Boolean },
+  isPublic: {type: Boolean },
   owner: { type: String },
 });
 
@@ -28,7 +28,7 @@ Meteor.methods({
       title,
       content,
       createdAt: new Date(),
-      checked: false,
+      isPublic: false,
       owner: Meteor.userId(),
     });
   },
@@ -37,10 +37,10 @@ Meteor.methods({
 
     Posts.remove(postId);
   },
-  'posts.setChecked'(postId, setChecked) {
+  'posts.setIsPublic'(postId, setIsPublic) {
     check(postId, String);
-    check(setChecked, Boolean);
+    check(setIsPublic, Boolean);
  
-    Posts.update(postId, { $set: { checked: setChecked } });
+    Posts.update(postId, { $set: { isPublic: setIsPublic } });
   },
 });

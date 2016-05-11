@@ -9,9 +9,9 @@ export default class Post extends Component {
     Meteor.call('posts.remove', this.props.post._id);
   }
   
-  toggleChecked() {
+  toggleIsPublic() {
     // Set the checked property to the opposite of its current value
-    Meteor.call('posts.setChecked', this.props.post._id, !this.props.post.checked);
+    Meteor.call('posts.setIsPublic', this.props.post._id, !this.props.post.isPublic);
   }
 
   render() {
@@ -28,8 +28,8 @@ export default class Post extends Component {
               <input
                 type="checkbox"
                 readOnly
-                checked={this.props.post.checked}
-                onClick={this.toggleChecked.bind(this)}
+                checked={this.props.post.isPublic}
+                onClick={this.toggleIsPublic.bind(this)}
               />
             </p>
             <p>{this.props.post.content}</p>
