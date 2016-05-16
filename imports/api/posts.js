@@ -10,7 +10,8 @@ Posts.schema = new SimpleSchema({
   content: { type: String },
   createdAt: { type: Date },
   isPublic: {type: Boolean },
-  owner: { type: String },
+  ownerId: { type: String },
+  ownerName: {type: String}
 });
 
 Posts.attachSchema(Posts.schema);
@@ -35,7 +36,8 @@ Meteor.methods({
       content,
       createdAt: new Date(),
       isPublic: false,
-      owner: Meteor.userId(),
+      ownerId: Meteor.userId(),
+      ownerName: Meteor.user().username,
     });
   },
   'posts.remove'(postId) {

@@ -17,7 +17,7 @@ export default class Post extends Component {
             <p>
               <span>
                 {this.props.post.title}
-                &nbsp;(written by {Meteor.users.findOne(this.props.post.owner).username})
+                &nbsp;(written by ({this.props.post.ownerName})
               </span>
               <button className="delete" onClick={this.deleteThisPost.bind(this)}>
                 &times;
