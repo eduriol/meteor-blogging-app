@@ -1,9 +1,11 @@
+/* global describe it beforeEach */
+
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { assert } from 'meteor/practicalmeteor:chai';
- 
-import { Posts} from './posts.js';
- 
+
+import { Posts } from './posts.js';
+
 if (Meteor.isServer) {
   describe('Posts', () => {
     describe('methods', () => {

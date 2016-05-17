@@ -18,7 +18,10 @@ Posts.attachSchema(Posts.schema);
 
 if (Meteor.isServer) {
   Meteor.publish('posts', function postsPublication() {
-    return Posts.find();
+    if (this.userId) {
+      return Posts.find();
+    }
+    return Posts.find({ isPublic: true });
   });
 }
 
