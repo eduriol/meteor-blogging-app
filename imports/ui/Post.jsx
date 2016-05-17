@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-// Post component - represents a single blog item
 export default class Post extends Component {
   deleteThisPost() {
     Meteor.call('posts.remove', this.props.post._id);
@@ -15,29 +14,27 @@ export default class Post extends Component {
     return (
         <li>
             <p>
-              <button className="delete" onClick={this.deleteThisPost.bind(this)}>
-                &times;
-              </button>
-              <input
-                type="checkbox"
-                readOnly
-                checked={this.props.post.isPublic}
-                onClick={this.toggleIsPublic.bind(this)}
-              />
-            </p>
-            <span>
+              { Meteor.user() ?
+              <div className="postInputs">
+                <button className="delete" onClick={this.deleteThisPost.bind(this)}>
+                  &times;
+                </button>
+                <label htmlFor="makePublic">make public?</label>
+                <input
+                  type="checkbox"
+                  readOnly
+                  checked={this.props.post.isPublic}
+                  onClick={this.toggleIsPublic.bind(this)}
+                />
+              </div> : ''
+              }
+              <span>
                 {this.props.post.title}
                 &nbsp;(written by ({this.props.post.ownerName})
-            </span>
+              </span>
+            </p>
             <p>{this.props.post.content}</p>
         </li>
     );
   }
 }
-
-// Post.propTypes = {
-//   // This component gets the post to display through a React prop.
-//   // We can use propTypes to indicate it is required
-//   post: PropTypes.object.isRequired,
-//   postsCount: PropTypes.number.isRequired,
-// };

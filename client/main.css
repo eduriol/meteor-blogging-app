@@ -20,3 +20,8 @@ ul {
     font-size: 1.5em;
     border: none;
 }
+
+.postInputs {
+    float: right;
+    font-size: 0.75em;    
+}
