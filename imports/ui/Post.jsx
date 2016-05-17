@@ -14,21 +14,21 @@ export default class Post extends Component {
   render() {
     return (
         <li>
-            <p>
-              <span>
+              <p>
+                <button className="delete" onClick={this.deleteThisPost.bind(this)}>
+                  &times;
+                </button>
+                <input
+                  type="checkbox"
+                  readOnly
+                  checked={this.props.post.isPublic}
+                  onClick={this.toggleIsPublic.bind(this)}
+                />
+              </p>
+            <span>
                 {this.props.post.title}
                 &nbsp;(written by ({this.props.post.ownerName})
-              </span>
-              <button className="delete" onClick={this.deleteThisPost.bind(this)}>
-                &times;
-              </button>
-              <input
-                type="checkbox"
-                readOnly
-                checked={this.props.post.isPublic}
-                onClick={this.toggleIsPublic.bind(this)}
-              />
-            </p>
+            </span>
             <p>{this.props.post.content}</p>
         </li>
     );
