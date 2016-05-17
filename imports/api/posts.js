@@ -9,9 +9,9 @@ Posts.schema = new SimpleSchema({
   title: { type: String },
   content: { type: String },
   createdAt: { type: Date },
-  isPublic: {type: Boolean },
+  isPublic: { type: Boolean },
   ownerId: { type: String },
-  ownerName: {type: String}
+  ownerName: { type: String },
 });
 
 Posts.attachSchema(Posts.schema);
@@ -48,7 +48,7 @@ Meteor.methods({
   'posts.setIsPublic'(postId, setIsPublic) {
     check(postId, String);
     check(setIsPublic, Boolean);
- 
+
     Posts.update(postId, { $set: { isPublic: setIsPublic } });
   },
 });
