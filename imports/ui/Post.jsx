@@ -14,17 +14,17 @@ export default class Post extends Component {
   render() {
     return (
         <li>
-              <p>
-                <button className="delete" onClick={this.deleteThisPost.bind(this)}>
-                  &times;
-                </button>
-                <input
-                  type="checkbox"
-                  readOnly
-                  checked={this.props.post.isPublic}
-                  onClick={this.toggleIsPublic.bind(this)}
-                />
-              </p>
+            <p>
+              <button className="delete" onClick={this.deleteThisPost.bind(this)}>
+                &times;
+              </button>
+              <input
+                type="checkbox"
+                readOnly
+                checked={this.props.post.isPublic}
+                onClick={this.toggleIsPublic.bind(this)}
+              />
+            </p>
             <span>
                 {this.props.post.title}
                 &nbsp;(written by ({this.props.post.ownerName})
@@ -35,9 +35,9 @@ export default class Post extends Component {
   }
 }
 
-Post.propTypes = {
-  // This component gets the post to display through a React prop.
-  // We can use propTypes to indicate it is required
-  post: PropTypes.object.isRequired,
-  postsCount: PropTypes.number.isRequired,
-};
+// Post.propTypes = {
+//   // This component gets the post to display through a React prop.
+//   // We can use propTypes to indicate it is required
+//   post: PropTypes.object.isRequired,
+//   postsCount: PropTypes.number.isRequired,
+// };

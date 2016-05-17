@@ -24,7 +24,7 @@ class App extends Component {
   renderPosts() {
     let visiblePosts = this.props.posts;
     if (!this.props.currentUser) {
-      visiblePosts = visiblePosts.filter(post => !post.isPublic);
+      visiblePosts = visiblePosts.filter(post => post.isPublic);
     }
     return visiblePosts.map((post) => (
       <Post key={post._id} post={post}/>
