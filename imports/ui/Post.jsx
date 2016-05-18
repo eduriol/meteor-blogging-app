@@ -14,7 +14,7 @@ export default class Post extends Component {
     return (
         <li>
             <p>
-              { Meteor.user() ?
+              { (Meteor.userId() === this.props.post.ownerId) ?
               <div className="postInputs">
                 <button className="delete" onClick={this.deleteThisPost.bind(this)}>
                   &times;

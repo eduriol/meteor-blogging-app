@@ -29,6 +29,19 @@ if (Meteor.isServer) {
         deletePost.apply(invocation, [post]);
         assert.equal(Posts.find().count(), 0);
       });
+      
+      it('cannot delete other\'s post', () => {
+        const deletePost = Meteor.server.method_handlers['posts.remove'];
+        const otherUserId = Random.id();
+        const invocation = { otherUserId };
+        assert.throws(
+          function () {
+            deletePost.apply(invocation, [post])
+          },
+          Meteor.Error,
+          'not-authorized'
+        );
+      });
     });
   });
 }

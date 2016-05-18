@@ -46,6 +46,10 @@ Meteor.methods({
   'posts.remove'(postId) {
     check(postId, String);
 
+    if (this.userId !== Posts.findOne(postId).ownerId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
     Posts.remove(postId);
   },
   'posts.setIsPublic'(postId, setIsPublic) {
