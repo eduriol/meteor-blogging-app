@@ -56,6 +56,10 @@ Meteor.methods({
     check(postId, String);
     check(setIsPublic, Boolean);
 
+    if (this.userId !== Posts.findOne(postId).ownerId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
     Posts.update(postId, { $set: { isPublic: setIsPublic } });
   },
 });
