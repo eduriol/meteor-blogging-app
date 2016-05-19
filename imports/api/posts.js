@@ -62,4 +62,15 @@ Meteor.methods({
 
     Posts.update(postId, { $set: { isPublic: setIsPublic } });
   },
+  'posts.update'(postId, newTitle, newContent) {
+    check(postId, String);
+    check(newTitle, String);
+    check(newContent, String);
+
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+    
+    Posts.update(postId, { $set: { title: newTitle, content: newContent } });
+  },
 });

@@ -28,12 +28,14 @@ export default class Post extends Component {
                 />
               </div> : ''
               }
-              <span>
+              <h3>
                 {this.props.post.title}
-                &nbsp;(written by ({this.props.post.ownerName})
-              </span>
+                &nbsp;(by {this.props.post.ownerName})
+              </h3>
             </p>
-            <p>{this.props.post.content}</p>
+            <p>
+              {this.props.post.content}
+            </p>
         </li>
     );
   }
