@@ -2,6 +2,7 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import { Accounts } from 'meteor/accounts-base';
 import { assert } from 'meteor/practicalmeteor:chai';
 
 import { Posts } from './posts.js';
@@ -13,7 +14,7 @@ if (Meteor.isServer) {
       const otherUserId = Random.id();
       let post;
       beforeEach(() => {
-        Meteor.users.remove({}); 
+        Meteor.users.remove({});
         Posts.remove({});
         post = Posts.insert({
           title: 'test title',
@@ -65,7 +66,7 @@ if (Meteor.isServer) {
 
       it('can insert a new post when logged in', () => {
         const insertPost = Meteor.server.method_handlers['posts.insert'];
-        const invocation = {userId: Accounts.createUser({ username: 'jdoe', password: 'jdoe'})};
+        const invocation = { userId: Accounts.createUser({ username: 'jdoe', password: 'jdoe' }) };
         Posts.remove({});
         insertPost.apply(invocation, ['test title', 'test content']);
         assert.equal(Posts.findOne().ownerName, 'jdoe');
