@@ -39,8 +39,8 @@ Meteor.methods({
       content,
       createdAt: new Date(),
       isPublic: false,
-      ownerId: Meteor.userId(),
-      ownerName: Meteor.user().username,
+      ownerId: this.userId,
+      ownerName: Meteor.users.findOne(this.userId).username,
     });
   },
   'posts.remove'(postId) {

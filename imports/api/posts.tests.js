@@ -13,9 +13,10 @@ if (Meteor.isServer) {
       const otherUserId = Random.id();
       let post;
       beforeEach(() => {
+        Meteor.users.remove({}); 
         Posts.remove({});
         post = Posts.insert({
-          title: 'test post',
+          title: 'test title',
           content: 'test content',
           createdAt: new Date(),
           isPublic: false,
@@ -56,6 +57,25 @@ if (Meteor.isServer) {
         assert.throws(
           () => {
             makePublic.apply(invocation, [post, true]);
+          },
+          Meteor.Error,
+          'not-authorized'
+        );
+      });
+
+      it('can insert a new post when logged in', () => {
+        const insertPost = Meteor.server.method_handlers['posts.insert'];
+        const invocation = {userId: Accounts.createUser({ username: 'jdoe', password: 'jdoe'})};
+        Posts.remove({});
+        insertPost.apply(invocation, ['test title', 'test content']);
+        assert.equal(Posts.findOne().ownerName, 'jdoe');
+      });
+
+      it('cannot insert a new post when nobody logged in', () => {
+        const insertPost = Meteor.server.method_handlers['posts.insert'];
+        assert.throws(
+          () => {
+            insertPost.apply({}, ['test title', 'test content']);
           },
           Meteor.Error,
           'not-authorized'
