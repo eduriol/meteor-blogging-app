@@ -82,7 +82,7 @@ if (Meteor.isServer) {
           'not-authorized'
         );
       });
-      
+
       it('can edit owned post', () => {
         const updatePost = Meteor.server.method_handlers['posts.update'];
         const invocation = { userId };
@@ -90,7 +90,7 @@ if (Meteor.isServer) {
         assert.equal(Posts.findOne(post).title, 'updated test title');
         assert.equal(Posts.findOne(post).content, 'updated test content');
       });
-      
+
       it('cannot edit other\'s post', () => {
         const updatePost = Meteor.server.method_handlers['posts.update'];
         const invocation = { otherUserId };

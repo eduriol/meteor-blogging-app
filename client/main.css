@@ -25,3 +25,7 @@ ul {
     float: right;
     font-size: 0.75em;    
 }
+
+.imageButton {
+    width: 1.5em;
+}

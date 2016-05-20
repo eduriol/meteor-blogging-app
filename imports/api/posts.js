@@ -70,7 +70,7 @@ Meteor.methods({
     if (! this.userId) {
       throw new Meteor.Error('not-authorized');
     }
-    
+
     Posts.update(postId, { $set: { title: newTitle, content: newContent } });
   },
 });
