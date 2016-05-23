@@ -35,15 +35,21 @@ class App extends Component {
           <AccountsUIWrapper />
 
           { this.props.currentUser ?
-            <form onSubmit={this.handleSubmit.bind(this)} >
-              <p>
-                <input type="text" ref="titleInput" placeholder="Type to add the post title"/>
-              </p>
-              <p>
-                <textarea ref="contentInput" placeholder="Type to add the post content"/>
-              </p>
-              <input type="submit"/>
-            </form> : ''
+            <div className="row">
+              <div className="col-xs-12">
+                <form onSubmit={this.handleSubmit.bind(this)} >
+                  <div className="form-group">
+                    <p>
+                      <input type="text" ref="titleInput" placeholder="Type to add the post title"/>
+                    </p>
+                    <p>
+                      <textarea className="form-control" ref="contentInput" placeholder="Type to add the post content"/>
+                    </p>
+                    <input type="submit"/>
+                  </div>
+                </form>
+              </div>
+            </div>: ''
           }
         </header>
         <ul>
