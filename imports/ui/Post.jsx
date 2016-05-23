@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
+import marked from 'marked';
 
 export default class Post extends Component {
   
@@ -33,6 +34,10 @@ export default class Post extends Component {
   handleChange(event) {
     this.setState({value: event.target.value});
   }
+  
+  rawMarkup() {
+    return { __html: marked(this.props.post.content, {sanitize: true}) };
+  }
 
   render() {
     return (
@@ -59,9 +64,7 @@ export default class Post extends Component {
                   {this.props.post.title} (by {this.props.post.ownerName})
                 </h3>
               </p>
-              <p>
-                {this.props.post.content}
-              </p>
+              <p dangerouslySetInnerHTML={this.rawMarkup()}/>
             </div> :
               <form onSubmit={this.updateThisPost.bind(this)} >
                 <p>
