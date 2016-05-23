@@ -45,16 +45,20 @@ class App extends Component {
                     <p>
                       <textarea className="form-control" ref="contentInput" placeholder="Type to add the post content"/>
                     </p>
-                    <input type="submit"/>
+                    <button type="submit" className="btn btn-default">Send</button>
                   </div>
                 </form>
               </div>
             </div>: ''
           }
         </header>
-        <ul>
-          {this.renderPosts()}
-        </ul>
+        <div className="row">
+       	  <div className="col-xs-12">
+            <ul className="list-group">
+              {this.renderPosts()}
+            </ul>
+          </div>
+		</div>
       </div>
     );
   }

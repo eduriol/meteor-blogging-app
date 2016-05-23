@@ -41,7 +41,7 @@ export default class Post extends Component {
 
   render() {
     return (
-        <li>
+        <li className="list-group-item">
             { !this.state.edit ?
             <div>
               <p>
