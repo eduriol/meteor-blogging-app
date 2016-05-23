@@ -10,7 +10,7 @@ meteor
 ```
 To run the Mocha tests:
 ```
-meteor test --driver-package practicalmeteor:mocha --port 8080
+meteor test --driver-package practicalmeteor:mocha
 ```
 And to run the ESLint analyzer:
 ```
