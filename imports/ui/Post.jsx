@@ -12,7 +12,6 @@ export default class Post extends Component {
     };
   }
 
-  
   deleteThisPost() {
     Meteor.call('posts.remove', this.props.post._id);
   }
@@ -42,40 +41,40 @@ export default class Post extends Component {
   render() {
     return (
         <li className="list-group-item">
-            { !this.state.edit ?
+          { !this.state.edit ?
             <div>
-              <p>
-                { (Meteor.userId() === this.props.post.ownerId) ?
+              { (Meteor.userId() === this.props.post.ownerId) ?
                 <div className="postInputs">
                   <img onClick={this.changeToEditMode.bind(this)} className="imageButton" src="/edit.png"/>
-                  <label htmlFor="makePublic">make public?</label>
-                  <input
-                    type="checkbox"
-                    readOnly
-                    checked={this.props.post.isPublic}
-                    onClick={this.toggleIsPublic.bind(this)}
-                  />
+                  <div class="checkbox">
+                    <label>
+                      <input
+                        type="checkbox"
+                        readOnly
+                        checked={this.props.post.isPublic}
+                        onClick={this.toggleIsPublic.bind(this)}/> make public
+                    </label>
+                  </div>
                   <button className="delete" onClick={this.deleteThisPost.bind(this)}>
                     &times;
                   </button>
                 </div> : ''
-                }
-                <h3>
-                  {this.props.post.title} (by {this.props.post.ownerName})
-                </h3>
-              </p>
+              }
+              <h2>
+                {this.props.post.title} <small>(by {this.props.post.ownerName})</small>
+              </h2>
               <p dangerouslySetInnerHTML={this.rawMarkup()}/>
             </div> :
-              <form onSubmit={this.updateThisPost.bind(this)} >
-                <p>
-                  <input type="text" ref="newTitleInput" value={this.props.post.title} onChange={this.handleChange}/>
-                </p>
-                <p>
-                  <textarea ref="newContentInput" value={this.props.post.content} onChange={this.handleChange}/>
-                </p>
-                <input type="submit"/>
-              </form>
-            }
+            <form onSubmit={this.updateThisPost.bind(this)} >
+                <div className="form-group">
+                  <input className="form-control" type="text" ref="newTitleInput" value={this.props.post.title} onChange={this.handleChange}/>
+                </div>
+                <div className="form-group">
+                  <textarea className="form-control" ref="newContentInput" value={this.props.post.content} onChange={this.handleChange}/>
+                </div>
+                <button type="submit" className="btn btn-default">save</button>
+            </form>
+          }
         </li>
     );
   }

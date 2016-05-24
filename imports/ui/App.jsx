@@ -29,37 +29,32 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <header>
-          <h1>My blog</h1>
-          <AccountsUIWrapper />
-
-          { this.props.currentUser ?
-            <div className="row">
-              <div className="col-xs-12">
-                <form onSubmit={this.handleSubmit.bind(this)} >
-                  <div className="form-group">
-                    <p>
-                      <input type="text" ref="titleInput" placeholder="Type to add the post title"/>
-                    </p>
-                    <p>
+      <div className="row">
+        <div className="col-xs-12">
+          <header>
+            <h1>My blog</h1>
+            <div className="loginForm">
+              <AccountsUIWrapper/>
+            </div>
+            { this.props.currentUser ?
+                  <form onSubmit={this.handleSubmit.bind(this)} >
+                    <div className="form-group">
+                      <input className="form-control" type="text" ref="titleInput" placeholder="Type to add the post title"/>
+                    </div>
+                    <div className="form-group">
                       <textarea className="form-control" ref="contentInput" placeholder="Type to add the post content"/>
-                    </p>
-                    <button type="submit" className="btn btn-default">Send</button>
-                  </div>
-                </form>
-              </div>
-            </div>: ''
-          }
-        </header>
-        <div className="row">
-       	  <div className="col-xs-12">
-            <ul className="list-group">
-              {this.renderPosts()}
-            </ul>
-          </div>
-		</div>
-      </div>
+                    </div>
+                    <div className="form-group">
+                      <button type="submit" className="btn btn-default">send</button>
+                    </div>
+                  </form> : ''
+            }
+          </header>
+          <ul className="list-group">
+            {this.renderPosts()}
+          </ul>
+        </div>
+		  </div>
     );
   }
 }
