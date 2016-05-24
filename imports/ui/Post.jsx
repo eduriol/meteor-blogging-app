@@ -45,7 +45,7 @@ export default class Post extends Component {
             <div>
               { (Meteor.userId() === this.props.post.ownerId) ?
                 <div className="postInputs">
-                  <img onClick={this.changeToEditMode.bind(this)} className="imageButton" src="/edit.png"/>
+                    <input type="image" src="/edit.png" name="saveForm" className="imageButton" onClick={this.changeToEditMode.bind(this)} />
                   <div class="checkbox">
                     <label>
                       <input
@@ -67,10 +67,13 @@ export default class Post extends Component {
             </div> :
             <form onSubmit={this.updateThisPost.bind(this)} >
                 <div className="form-group">
-                  <input className="form-control" type="text" ref="newTitleInput" value={this.props.post.title} onChange={this.handleChange}/>
+                  <input className="form-control input-lg" type="text" ref="newTitleInput" value={this.props.post.title} onChange={this.handleChange}/>
                 </div>
                 <div className="form-group">
-                  <textarea className="form-control" ref="newContentInput" value={this.props.post.content} onChange={this.handleChange}/>
+                  <textarea className="form-control" rows="10" ref="newContentInput" aria-describedby="helpBlock" value={this.props.post.content} onChange={this.handleChange}/>
+                  <span id="helpBlock" class="help-block">
+                    The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
+                  </span>
                 </div>
                 <button type="submit" className="btn btn-default">save</button>
             </form>

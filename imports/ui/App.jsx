@@ -39,10 +39,13 @@ class App extends Component {
             { this.props.currentUser ?
                   <form onSubmit={this.handleSubmit.bind(this)} >
                     <div className="form-group">
-                      <input className="form-control" type="text" ref="titleInput" placeholder="Type to add the post title"/>
+                      <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title"/>
                     </div>
                     <div className="form-group">
-                      <textarea className="form-control" ref="contentInput" placeholder="Type to add the post content"/>
+                      <textarea className="form-control" rows="10" ref="contentInput" placeholder="Type to add the post content" aria-describedby="helpBlock"/>
+                      <span id="helpBlock" class="help-block">
+                        The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
+                      </span>
                     </div>
                     <div className="form-group">
                       <button type="submit" className="btn btn-default">send</button>
