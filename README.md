@@ -1,5 +1,5 @@
 # Posteor
-Posteor is a minimalist and lightweight JavaScript blogging platform written with [Meteor](https://www.meteor.com/) & [React](https://facebook.github.io/react/) for fun and learning.
+Posteor is a minimalist and lightweight JavaScript blogging platform written with [Meteor](https://www.meteor.com/) & [React](https://facebook.github.io/react/) for fun and learning. [Bootstrap](http://getbootstrap.com/) has been used for styling.
 
 ## Installation
 In order to install and run the platform, just follow the next steps:
