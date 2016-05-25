@@ -29,34 +29,34 @@ class App extends Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-xs-12">
-          <header>
-            <h1>My blog</h1>
-            <div className="loginForm">
-              <AccountsUIWrapper/>
-            </div>
-            { this.props.currentUser ?
-                  <form onSubmit={this.handleSubmit.bind(this)} >
-                    <div className="form-group">
-                      <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title"/>
-                    </div>
-                    <div className="form-group">
-                      <textarea className="form-control" rows="10" ref="contentInput" placeholder="Type to add the post content" aria-describedby="helpBlock"/>
-                      <span id="helpBlock" class="help-block">
-                        The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
-                      </span>
-                    </div>
-                    <div className="form-group">
-                      <button type="submit" className="btn btn-default">send</button>
-                    </div>
-                  </form> : ''
-            }
-          </header>
-          <ul className="list-group">
-            {this.renderPosts()}
-          </ul>
-        </div>
+      <div className="container">
+        <header>
+          <h1>My blog</h1>
+          <div className="loginForm">
+            <AccountsUIWrapper/>
+          </div>
+          { this.props.currentUser ?
+            <div className="row">
+              <form className="col-md-6 col-md-offset-3" onSubmit={this.handleSubmit.bind(this)}>
+                <div className="form-group">
+                  <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title"/>
+                </div>
+                <div className="form-group">
+                  <textarea className="form-control" rows="10" ref="contentInput" placeholder="Type to add the post content" aria-describedby="helpBlock"/>
+                  <span id="helpBlock" className="help-block">
+                    The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
+                  </span>
+                </div>
+                <div className="form-group pull-right">
+                  <button type="submit" className="btn btn-default">send</button>
+                </div>
+              </form>
+            </div> : ''
+          }
+        </header>
+        <ul className="list-group">
+          {this.renderPosts()}
+        </ul>
 		  </div>
     );
   }

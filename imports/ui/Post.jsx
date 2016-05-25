@@ -45,8 +45,7 @@ export default class Post extends Component {
             <div>
               { (Meteor.userId() === this.props.post.ownerId) ?
                 <div className="postInputs">
-                    <input type="image" src="/edit.png" name="saveForm" className="imageButton" onClick={this.changeToEditMode.bind(this)} />
-                  <div class="checkbox">
+                  <div className="checkbox">
                     <label>
                       <input
                         type="checkbox"
@@ -55,8 +54,11 @@ export default class Post extends Component {
                         onClick={this.toggleIsPublic.bind(this)}/> make public
                     </label>
                   </div>
-                  <button className="delete" onClick={this.deleteThisPost.bind(this)}>
-                    &times;
+                  <button type="button" className="btn btn-link" onClick={this.changeToEditMode.bind(this)}>
+                    <span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                  </button>
+                  <button type="button" className="btn btn-link" onClick={this.deleteThisPost.bind(this)}>
+                    <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
                   </button>
                 </div> : ''
               }
@@ -65,18 +67,19 @@ export default class Post extends Component {
               </h2>
               <p dangerouslySetInnerHTML={this.rawMarkup()}/>
             </div> :
-            <form onSubmit={this.updateThisPost.bind(this)} >
+            <div className="row">
+              <form className="col-md-6 col-md-offset-3" onSubmit={this.updateThisPost.bind(this)} >
                 <div className="form-group">
                   <input className="form-control input-lg" type="text" ref="newTitleInput" value={this.props.post.title} onChange={this.handleChange}/>
                 </div>
                 <div className="form-group">
-                  <textarea className="form-control" rows="10" ref="newContentInput" aria-describedby="helpBlock" value={this.props.post.content} onChange={this.handleChange}/>
-                  <span id="helpBlock" class="help-block">
-                    The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
-                  </span>
+                  <textarea className="form-control" rows="10" ref="newContentInput" value={this.props.post.content} onChange={this.handleChange}/>
                 </div>
-                <button type="submit" className="btn btn-default">save</button>
-            </form>
+                <div className="form-group pull-right">
+                  <button type="submit" className="btn btn-default">save</button>
+                </div>
+              </form>
+            </div>
           }
         </li>
     );
