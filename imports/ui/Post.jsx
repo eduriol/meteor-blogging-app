@@ -9,6 +9,7 @@ export default class Post extends Component {
     super(props);
     this.state = {
       edit: false,
+      contentHidden: true,
     };
   }
 
@@ -37,6 +38,10 @@ export default class Post extends Component {
   rawMarkup() {
     return { __html: marked(this.props.post.content, {sanitize: true}) };
   }
+  
+  toggleIsContentHidden() {
+    this.setState({contentHidden: !this.state.contentHidden});
+  }
 
   render() {
     return (
@@ -60,10 +65,12 @@ export default class Post extends Component {
                   </label>
                 </div> : ''
               }
-              <h2>
+              <h2 onClick={this.toggleIsContentHidden.bind(this)}>
                 {this.props.post.title} <small>(by {this.props.post.ownerName})</small>
               </h2>
-              <p dangerouslySetInnerHTML={this.rawMarkup()}/>
+              { !this.state.contentHidden ?
+                <p dangerouslySetInnerHTML={this.rawMarkup()}/> : ''
+              }
             </div> :
             <div className="row">
               <form className="col-md-6 col-md-offset-3" onSubmit={this.updateThisPost.bind(this)} >
