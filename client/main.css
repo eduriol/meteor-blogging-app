@@ -1,3 +1,7 @@
+.postTitle {
+    cursor: pointer;
+}
+
 .gray {
     color: gray;
 }

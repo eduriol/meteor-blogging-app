@@ -65,7 +65,7 @@ export default class Post extends Component {
                   </label>
                 </div> : ''
               }
-              <h2 onClick={this.toggleIsContentHidden.bind(this)}>
+              <h2 className="postTitle" onClick={this.toggleIsContentHidden.bind(this)}>
                 {this.props.post.title} <small>(by {this.props.post.ownerName})</small>
               </h2>
               { !this.state.contentHidden ?
