@@ -48,7 +48,7 @@ class App extends Component {
                   </span>
                 </div>
                 <div className="form-group pull-right">
-                  <button type="submit" className="btn btn-default">send</button>
+                  <button type="submit" className="btn btn-primary">send</button>
                 </div>
               </form>
             </div> : ''

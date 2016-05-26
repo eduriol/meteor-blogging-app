@@ -44,6 +44,10 @@ export default class Post extends Component {
   toggleIsContentHidden() {
     this.setState({contentHidden: !this.state.contentHidden});
   }
+  
+  cancelPostEditing() {
+    this.setState({edit: false});    
+  }
 
   render() {
     return (
@@ -82,8 +86,9 @@ export default class Post extends Component {
                 <div className="form-group">
                   <textarea className="form-control" rows="10" ref="newContentInput" value={this.props.post.content} onChange={this.handleChange}/>
                 </div>
-                <div className="form-group pull-right">
-                  <button type="submit" className="btn btn-default">save</button>
+                <div className="btn-toolbar pull-right">
+                  <button type="submit" className="btn btn-primary">save</button>
+                  <button type="button" className="btn btn-default" onClick={this.cancelPostEditing.bind(this)}>cancel</button>
                 </div>
               </form>
             </div>
