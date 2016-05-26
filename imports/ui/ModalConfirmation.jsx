@@ -4,7 +4,7 @@ export default class ModalConfirmation extends Component {
     render() {
         return (
             <div id="modalConfirmation" className="modal" role="dialog">
-                <div className="modal-dialog">
+                <div className="modal-dialog modal-vertical-centered">
                     <div className="modal-content">
                         <div className="modal-header">
                             <button type="button" className="close" data-dismiss="modal" ariaLabel="Close"><span aria-hidden="true">&times;</span></button>
