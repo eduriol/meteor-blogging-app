@@ -25,10 +25,12 @@ export default class Post extends Component {
     this.setState({edit: true});
   }
   
-  updateThisPost() {
+  updateThisPost(event) {
+    event.preventDefault();
     const newTitle = ReactDOM.findDOMNode(this.refs.newTitleInput).value.trim();
     const newContent = ReactDOM.findDOMNode(this.refs.newContentInput).value.trim();
     Meteor.call('posts.update', this.props.post._id, newTitle, newContent);
+    this.setState({edit: false, contentHidden: false});
   }
   
   handleChange(event) {
