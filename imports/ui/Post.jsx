@@ -25,8 +25,8 @@ export default class Post extends Component {
     Meteor.call('posts.setIsPublic', this.props.post._id, !this.props.post.isPublic);
   }
   
-  changeToEditMode() {
-    this.setState({edit: true});
+  toggleEditMode() {
+    this.setState({edit: !this.state.edit});
   }
   
   updateThisPost(event) {
@@ -48,10 +48,6 @@ export default class Post extends Component {
   toggleIsContentHidden() {
     this.setState({contentHidden: !this.state.contentHidden});
   }
-  
-  cancelPostEditing() {
-    this.setState({edit: false});    
-  }
 
   render() {
     return (
@@ -68,7 +64,7 @@ export default class Post extends Component {
             <div>
               { (Meteor.userId() === this.props.post.ownerId) ?
                 <div className="pull-right">
-                  <button type="button" className="btn btn-link gray" onClick={this.changeToEditMode.bind(this)}>
+                  <button type="button" className="btn btn-link gray" onClick={this.toggleEditMode.bind(this)}>
                     <span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                   </button>
                   <button type="button" className="btn btn-link gray" data-toggle="modal" data-target="#modalConfirmation">
@@ -100,7 +96,7 @@ export default class Post extends Component {
                 </div>
                 <div className="btn-toolbar pull-right">
                   <button type="submit" className="btn btn-primary">save</button>
-                  <button type="button" className="btn btn-default" onClick={this.cancelPostEditing.bind(this)}>cancel</button>
+                  <button type="button" className="btn btn-default" onClick={this.toggleEditMode.bind(this)}>cancel</button>
                 </div>
               </form>
             </div>
