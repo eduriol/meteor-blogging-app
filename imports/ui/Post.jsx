@@ -12,8 +12,6 @@ export default class Post extends Component {
     this.state = {
       edit: false,
       contentHidden: true,
-      showModal: false,
-      buttonClass: 'btn btn-danger',
     };
   }
 

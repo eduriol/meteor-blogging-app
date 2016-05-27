@@ -9,6 +9,18 @@ import Post from './Post.jsx';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      updated: false,
+    };
+  }
+
+  componentDidUpdate() {
+    this.setState({updated: true});
+  }
+  
   handleSubmit(event) {
     event.preventDefault();
 
@@ -26,7 +38,7 @@ class App extends Component {
       <Post key={post._id} post={post}/>
     ));
   }
-
+  
   render() {
     return (
       <div className="container">
@@ -54,9 +66,14 @@ class App extends Component {
             </div> : ''
           }
         </header>
-        <ul className="list-group">
-          {this.renderPosts()}
-        </ul>
+        { this.state.updated && (this.props.postsCount == 0) ?
+          <div className="col-md-6 col-md-offset-3 alert alert-warning" role="alert">
+            No posts have been published yet
+          </div> :
+          <ul className="list-group">
+            {this.renderPosts()}
+          </ul>
+        }
 		  </div>
     );
   }
@@ -64,6 +81,7 @@ class App extends Component {
 
 App.propTypes = {
   posts: PropTypes.array.isRequired,
+  postsCount: PropTypes.number.isRequired,
   currentUser: PropTypes.object,
 };
 
@@ -72,6 +90,7 @@ export default createContainer(() => {
 
   return {
     posts: Posts.find({}, { sort: { createdAt: -1 } }).fetch(),
+    postsCount: Posts.find({}).count(),
     currentUser: Meteor.user(),
   };
 }, App);
