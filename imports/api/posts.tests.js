@@ -10,11 +10,11 @@ import { Posts } from './posts.js';
 if (Meteor.isServer) {
   describe('Posts', () => {
     describe('methods', () => {
-      const userId = Random.id();
-      const otherUserId = Random.id();
+      Meteor.users.remove({});
+      const userId = Accounts.createUser({ username: 'jdoe', password: 'jdoe' });
+      const otherUserId = Accounts.createUser({ username: 'kdoe', password: 'kdoe' });
       let post;
       beforeEach(() => {
-        Meteor.users.remove({});
         Posts.remove({});
         post = Posts.insert({
           title: 'test title',
@@ -44,6 +44,19 @@ if (Meteor.isServer) {
           'not-authorized'
         );
       });
+      
+      it('delete proper post among others', () => {
+        const deletePost = Meteor.server.method_handlers['posts.remove'];
+        const insertPost = Meteor.server.method_handlers['posts.insert'];
+        const invocation = { userId };
+        insertPost.apply(invocation, ['test title 2', 'test content 2']);
+        insertPost.apply(invocation, ['test title 3', 'test content 3']);
+        let postToDelete = Posts.findOne({title: 'test title 2'});
+        deletePost.apply(invocation, [postToDelete._id]);
+        assert.equal(Posts.find({title: 'test title'}).count(), 1);
+        assert.equal(Posts.find({title: 'test title 2'}).count(), 0);
+        assert.equal(Posts.find({title: 'test title 3'}).count(), 1);
+      });
 
       it('can make public owned post', () => {
         const makePublic = Meteor.server.method_handlers['posts.setIsPublic'];
@@ -66,7 +79,7 @@ if (Meteor.isServer) {
 
       it('can insert a new post when logged in', () => {
         const insertPost = Meteor.server.method_handlers['posts.insert'];
-        const invocation = { userId: Accounts.createUser({ username: 'jdoe', password: 'jdoe' }) };
+        const invocation = { userId };
         Posts.remove({});
         insertPost.apply(invocation, ['test title', 'test content']);
         assert.equal(Posts.findOne().ownerName, 'jdoe');

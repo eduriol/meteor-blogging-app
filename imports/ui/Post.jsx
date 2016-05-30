@@ -65,7 +65,8 @@ export default class Post extends Component {
                   <button type="button" className="btn btn-link gray" onClick={this.toggleEditMode.bind(this)}>
                     <span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                   </button>
-                  <button type="button" className="btn btn-link gray" data-toggle="modal" data-target="#modalConfirmation">
+                  {/*<button type="button" className="btn btn-link gray" data-toggle="modal" data-target="#modalConfirmation">*/}
+                  <button type="button" className="btn btn-link gray" onClick={this.deleteThisPost.bind(this)}>
                     <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
                   </button>
                   <label className="checkbox-inline">
