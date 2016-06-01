@@ -71,7 +71,7 @@ export default class Post extends Component {
                 </div> : ''
               }
               <h2 className="postTitle" onClick={this.toggleIsContentHidden.bind(this)}>
-                {this.props.post.title} <small>(by {this.props.post.ownerName})</small>
+                {this.props.post.title} <small>(posted by {this.props.post.ownerName} on {this.props.post.createdAt.toDateString()})</small>
               </h2>
               { !this.state.contentHidden ?
                 <p dangerouslySetInnerHTML={this.rawMarkup()}/> : ''
