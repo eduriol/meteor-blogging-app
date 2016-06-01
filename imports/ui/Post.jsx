@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import marked from 'marked';
 
-import ModalConfirmation from './ModalConfirmation.jsx';
-
 export default class Post extends Component {
   
   constructor(props) {
@@ -16,7 +14,10 @@ export default class Post extends Component {
   }
 
   deleteThisPost() {
-    Meteor.call('posts.remove', this.props.post._id);
+    var r = confirm("Do you really want to delete this post? This action cannot be undone.");
+    if (r === true) {
+      Meteor.call('posts.remove', this.props.post._id);
+    }    
   }
   
   toggleIsPublic() {
@@ -50,14 +51,6 @@ export default class Post extends Component {
   render() {
     return (
         <li className="list-group-item">
-          <ModalConfirmation
-            title="Confirm deletion"
-            body="Do you really want to delete this post? This action cannot be undone."
-            cancelLabel="Cancel"
-            onConfirm={this.deleteThisPost.bind(this)}
-            confirmLabel="Delete"
-            buttonClass="btn btn-danger"
-          />
           { !this.state.edit ?
             <div>
               { (Meteor.userId() === this.props.post.ownerId) ?
@@ -65,7 +58,6 @@ export default class Post extends Component {
                   <button type="button" className="btn btn-link gray" onClick={this.toggleEditMode.bind(this)}>
                     <span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                   </button>
-                  {/*<button type="button" className="btn btn-link gray" data-toggle="modal" data-target="#modalConfirmation">*/}
                   <button type="button" className="btn btn-link gray" onClick={this.deleteThisPost.bind(this)}>
                     <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
                   </button>

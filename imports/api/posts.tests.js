@@ -1,7 +1,6 @@
 /* global describe it beforeEach */
 
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { Accounts } from 'meteor/accounts-base';
 import { assert } from 'meteor/practicalmeteor:chai';
 
@@ -44,18 +43,18 @@ if (Meteor.isServer) {
           'not-authorized'
         );
       });
-      
+
       it('delete proper post among others', () => {
         const deletePost = Meteor.server.method_handlers['posts.remove'];
         const insertPost = Meteor.server.method_handlers['posts.insert'];
         const invocation = { userId };
         insertPost.apply(invocation, ['test title 2', 'test content 2']);
         insertPost.apply(invocation, ['test title 3', 'test content 3']);
-        let postToDelete = Posts.findOne({title: 'test title 2'});
+        const postToDelete = Posts.findOne({ title: 'test title 2' });
         deletePost.apply(invocation, [postToDelete._id]);
-        assert.equal(Posts.find({title: 'test title'}).count(), 1);
-        assert.equal(Posts.find({title: 'test title 2'}).count(), 0);
-        assert.equal(Posts.find({title: 'test title 3'}).count(), 1);
+        assert.equal(Posts.find({ title: 'test title' }).count(), 1);
+        assert.equal(Posts.find({ title: 'test title 2' }).count(), 0);
+        assert.equal(Posts.find({ title: 'test title 3' }).count(), 1);
       });
 
       it('can make public owned post', () => {
