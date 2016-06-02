@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 export default class ModalConfirmation extends Component {
     render() {
         return (
-            <div id="modalConfirmation" className="modal" role="dialog">
+            <div id={this.props.modalId} className="modal" role="dialog">
                 <div className="modal-dialog modal-vertical-centered">
                     <div className="modal-content">
                         <div className="modal-header">
