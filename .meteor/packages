@@ -18,9 +18,10 @@ es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 react-meteor-data
-aldeed:simple-schema
 aldeed:collection2
 accounts-ui
 accounts-password
 practicalmeteor:mocha
 twbs:bootstrap
+mdg:validated-method
+aldeed:simple-schema

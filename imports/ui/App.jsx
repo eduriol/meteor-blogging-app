@@ -12,13 +12,24 @@ class App extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    const title = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
-    const content = ReactDOM.findDOMNode(this.refs.contentInput).value.trim();
-
-    Meteor.call('posts.insert', title, content);
-
-    ReactDOM.findDOMNode(this.refs.titleInput).value = '';
-    ReactDOM.findDOMNode(this.refs.contentInput).value = '';
+    var newPost = {
+      title: ReactDOM.findDOMNode(this.refs.titleInput).value.trim(),
+      content: ReactDOM.findDOMNode(this.refs.contentInput).value.trim(),
+      createdAt: new Date(),
+      isPublic: false,
+      ownerId: Meteor.userId(),
+      ownerName: Meteor.users.findOne(Meteor.userId()).username,
+    };
+    
+    Meteor.call('Posts.methods.insert', newPost, (error) => {
+      if (error) {
+        alert(error.reason);
+      }
+      else {
+        ReactDOM.findDOMNode(this.refs.titleInput).value = '';
+        ReactDOM.findDOMNode(this.refs.contentInput).value = '';    
+      }
+    });
   }
 
   renderPosts() {

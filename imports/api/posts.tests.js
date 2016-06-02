@@ -77,18 +77,32 @@ if (Meteor.isServer) {
       });
 
       it('can insert a new post when logged in', () => {
-        const insertPost = Meteor.server.method_handlers['posts.insert'];
+        const insertPost = Meteor.server.method_handlers['Posts.methods.insert'];
         const invocation = { userId };
         Posts.remove({});
-        insertPost.apply(invocation, ['test title', 'test content']);
+        insertPost.apply(invocation, [{
+          title: 'test title',
+          content: 'test content',
+          createdAt: new Date(),
+          isPublic: false,
+          ownerId: userId,
+          ownerName: 'jdoe',
+        }]);
         assert.equal(Posts.findOne().ownerName, 'jdoe');
       });
 
       it('cannot insert a new post when nobody logged in', () => {
-        const insertPost = Meteor.server.method_handlers['posts.insert'];
+        const insertPost = Meteor.server.method_handlers['Posts.methods.insert'];
         assert.throws(
           () => {
-            insertPost.apply({}, ['test title', 'test content']);
+            insertPost.apply({}, [{
+              title: 'test title',
+              content: 'test content',
+              createdAt: new Date(),
+              isPublic: false,
+              ownerId: userId,
+              ownerName: 'jdoe',
+            }]);
           },
           Meteor.Error,
           'not-authorized'

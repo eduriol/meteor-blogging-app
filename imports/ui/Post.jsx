@@ -46,58 +46,76 @@ export default class Post extends Component {
   toggleIsContentHidden() {
     this.setState({contentHidden: !this.state.contentHidden});
   }
+  
+  renderModal() {
+    return (
+      <ModalConfirmation
+        title="Confirm deletion"
+        body="Do you really want to delete this post? This action cannot be undone."
+        cancelLabel="Cancel"
+        onConfirm={ this.deleteThisPost.bind(this) }
+        confirmLabel="Delete"
+        buttonClass="btn btn-danger"
+        modalId={ "modalConfirmation".concat(this.props.post._id) }
+      />      
+    );
+  }
+  
+  renderPostButtons() {
+    return (
+      <div className="pull-right">
+        <button type="button" className="btn btn-link gray" onClick={ this.toggleEditMode.bind(this) }>
+          <span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+        </button>
+        <button type="button" className="btn btn-link gray" data-toggle="modal" data-target={"#modalConfirmation".concat(this.props.post._id)}>
+          <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+        <label className="checkbox-inline">
+          <input
+            type="checkbox"
+            readOnly
+            checked={ this.props.post.isPublic }
+            onClick={ this.toggleIsPublic.bind(this) }/><small>make public</small>
+        </label>
+      </div>
+    );
+  }
+  
+  renderEditForm() {
+    return (
+      <form className="col-md-6 col-md-offset-3" onSubmit={ this.updateThisPost.bind(this) } >
+        <div className="form-group">
+          <input className="form-control input-lg" type="text" ref="newTitleInput" value={ this.props.post.title } onChange={ this.handleChange }/>
+        </div>
+        <div className="form-group">
+          <textarea className="form-control" rows="10" ref="newContentInput" value={ this.props.post.content } onChange={ this.handleChange }/>
+        </div>
+        <div className="btn-toolbar pull-right">
+          <button type="submit" className="btn btn-primary">save</button>
+          <button type="button" className="btn btn-default" onClick={ this.toggleEditMode.bind(this) }>cancel</button>
+        </div>
+      </form>
+    );
+  }
 
   render() {
     return (
         <li className="list-group-item">
-          <ModalConfirmation
-            title="Confirm deletion"
-            body="Do you really want to delete this post? This action cannot be undone."
-            cancelLabel="Cancel"
-            onConfirm={this.deleteThisPost.bind(this)}
-            confirmLabel="Delete"
-            buttonClass="btn btn-danger"
-            modalId={"modalConfirmation".concat(this.props.post._id)}
-          />
+          { this.renderModal() }
           { !this.state.edit ?
             <div>
               { (Meteor.userId() === this.props.post.ownerId) ?
-                <div className="pull-right">
-                  <button type="button" className="btn btn-link gray" onClick={this.toggleEditMode.bind(this)}>
-                    <span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                  </button>
-                  <button type="button" className="btn btn-link gray" data-toggle="modal" data-target={"#modalConfirmation".concat(this.props.post._id)}>
-                    <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                  </button>
-                  <label className="checkbox-inline">
-                    <input
-                      type="checkbox"
-                      readOnly
-                      checked={this.props.post.isPublic}
-                      onClick={this.toggleIsPublic.bind(this)}/><small>make public</small>
-                  </label>
-                </div> : ''
+                this.renderPostButtons() : ''
               }
-              <h2 className="postTitle" onClick={this.toggleIsContentHidden.bind(this)}>
-                {this.props.post.title} <small>(posted by {this.props.post.ownerName} on {this.props.post.createdAt.toDateString()})</small>
+              <h2 className="postTitle" onClick={ this.toggleIsContentHidden.bind(this) }>
+                { this.props.post.title } <small>(posted by { this.props.post.ownerName } on { this.props.post.createdAt.toDateString() })</small>
               </h2>
               { !this.state.contentHidden ?
-                <p dangerouslySetInnerHTML={this.rawMarkup()}/> : ''
+                <p dangerouslySetInnerHTML={ this.rawMarkup() }/> : ''
               }
             </div> :
             <div className="row">
-              <form className="col-md-6 col-md-offset-3" onSubmit={this.updateThisPost.bind(this)} >
-                <div className="form-group">
-                  <input className="form-control input-lg" type="text" ref="newTitleInput" value={this.props.post.title} onChange={this.handleChange}/>
-                </div>
-                <div className="form-group">
-                  <textarea className="form-control" rows="10" ref="newContentInput" value={this.props.post.content} onChange={this.handleChange}/>
-                </div>
-                <div className="btn-toolbar pull-right">
-                  <button type="submit" className="btn btn-primary">save</button>
-                  <button type="button" className="btn btn-default" onClick={this.toggleEditMode.bind(this)}>cancel</button>
-                </div>
-              </form>
+              { this.renderEditForm() }
             </div>
           }
         </li>
