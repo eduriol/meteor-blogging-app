@@ -51,6 +51,15 @@ export default class Post extends Component {
   render() {
     return (
         <li className="list-group-item">
+          <ModalConfirmation
+            title="Confirm deletion"
+            body="Do you really want to delete this post? This action cannot be undone."
+            cancelLabel="Cancel"
+            onConfirm={this.deleteThisPost.bind(this)}
+            confirmLabel="Delete"
+            buttonClass="btn btn-danger"
+            modalId={"modalConfirmation".concat(this.props.post._id)}
+          />
           { !this.state.edit ?
             <div>
               { (Meteor.userId() === this.props.post.ownerId) ?
@@ -58,7 +67,7 @@ export default class Post extends Component {
                   <button type="button" className="btn btn-link gray" onClick={this.toggleEditMode.bind(this)}>
                     <span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                   </button>
-                  <button type="button" className="btn btn-link gray" onClick={this.deleteThisPost.bind(this)}>
+                  <button type="button" className="btn btn-link gray" data-toggle="modal" data-target={"#modalConfirmation".concat(this.props.post._id)}>
                     <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
                   </button>
                   <label className="checkbox-inline">
