@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import marked from 'marked';
 
+import ModalConfirmation from './ModalConfirmation.jsx';
+
 export default class Post extends Component {
   
   constructor(props) {
@@ -14,10 +16,7 @@ export default class Post extends Component {
   }
 
   deleteThisPost() {
-    var r = confirm("Do you really want to delete this post? This action cannot be undone.");
-    if (r === true) {
-      Meteor.call('posts.remove', this.props.post._id);
-    }    
+    Meteor.call('posts.remove', this.props.post._id);
   }
   
   toggleIsPublic() {
