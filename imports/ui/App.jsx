@@ -9,27 +9,38 @@ import Post from './Post.jsx';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      noPostTitle: false,
+    };
+  }
+
   handleSubmit(event) {
     event.preventDefault();
-
-    var newPost = {
-      title: ReactDOM.findDOMNode(this.refs.titleInput).value.trim(),
-      content: ReactDOM.findDOMNode(this.refs.contentInput).value.trim(),
-      createdAt: new Date(),
-      isPublic: false,
-      ownerId: Meteor.userId(),
-      ownerName: Meteor.users.findOne(Meteor.userId()).username,
-    };
-    
-    Meteor.call('Posts.methods.insert', newPost, (error) => {
-      if (error) {
-        alert(error.reason);
-      }
-      else {
-        ReactDOM.findDOMNode(this.refs.titleInput).value = '';
-        ReactDOM.findDOMNode(this.refs.contentInput).value = '';    
-      }
-    });
+    const newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
+    if (newTitle !== '') {
+      this.setState({ noPostTitle: false });
+      var newPost = {
+        title: newTitle,
+        content: ReactDOM.findDOMNode(this.refs.contentInput).value.trim(),
+        createdAt: new Date(),
+        isPublic: false,
+        ownerId: Meteor.userId(),
+        ownerName: Meteor.users.findOne(Meteor.userId()).username,
+      };
+      
+      Meteor.call('Posts.methods.insert', newPost, (error) => {
+        if (!error) {
+          ReactDOM.findDOMNode(this.refs.titleInput).value = '';
+          ReactDOM.findDOMNode(this.refs.contentInput).value = '';    
+        }
+      });
+    }
+    else {
+      this.setState({ noPostTitle: true });
+    }
   }
 
   renderPosts() {
@@ -49,9 +60,14 @@ class App extends Component {
           { this.props.currentUser ?
             <div className="row">
               <form className="col-md-6 col-md-offset-3" onSubmit={this.handleSubmit.bind(this)}>
-                <div className="form-group">
-                  <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title"/>
-                </div>
+                { this.state.noPostTitle ?
+                  <div className="form-group has-error has-feedback">
+                    <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title"/>
+                  </div> :
+                  <div className="form-group">
+                    <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title"/>
+                  </div>
+                }
                 <div className="form-group">
                   <textarea className="form-control" rows="10" ref="contentInput" placeholder="Type to add the post content" aria-describedby="helpBlock"/>
                   <span id="helpBlock" className="help-block">
