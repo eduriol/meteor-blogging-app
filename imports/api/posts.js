@@ -16,18 +16,9 @@ if (Meteor.isServer) {
   });
 }
 
-// Posts.schema = new SimpleSchema({
-//   title: { type: String },
-//   content: { type: String, optional: true },
-//   createdAt: { type: Date },
-//   isPublic: { type: Boolean },
-//   ownerId: { type: String },
-//   ownerName: { type: String },
-// });
-
 export const insertPost = new ValidatedMethod({
-    name: 'Posts.methods.insert',
-    validate: new SimpleSchema({
+  name: 'Posts.methods.insert',
+  validate: new SimpleSchema({
     title: { type: String, min: 1 },
     content: { type: String },
     createdAt: { type: Date },

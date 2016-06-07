@@ -9,14 +9,7 @@ import Post from './Post.jsx';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 
 class App extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      noPostTitle: false,
-    };
-  }
-
+  
   handleSubmit(event) {
     event.preventDefault();
     const newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
@@ -43,6 +36,35 @@ class App extends Component {
     }
   }
 
+  renderNewPostForm() {
+    const divStyle = {borderStyle: 'solid', borderWidth: '5px', borderColor: 'red'};
+    return (
+      <form className="col-md-8 col-md-offset-2" onSubmit={this.handleSubmit.bind(this)}>
+        <div className="form-group">
+          <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title" required />
+        </div>
+        <div className="form-group">
+          <textarea className="form-control" rows="10" ref="contentInput" placeholder="Type to add the post content" aria-describedby="helpBlock"/>
+            <div className="row">
+              <div className="col-md-6 col-xs-6">
+                <span id="helpBlock" className="help-block">
+                  The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
+                </span>
+              </div>
+              <div className="col-md-6 col-xs-6">
+                <button type="button" className="btn btn-link pull-right">
+                  show preview
+                </button>
+              </div>
+            </div>
+        </div>
+        <div className="form-group pull-right">
+          <button type="submit" className="btn btn-primary">send</button>
+        </div>
+      </form>  
+    );
+  }
+  
   renderPosts() {
     return this.props.posts.map((post) => (
       <Post key={post._id} post={post}/>
@@ -59,25 +81,7 @@ class App extends Component {
           </div>
           { this.props.currentUser ?
             <div className="row">
-              <form className="col-md-6 col-md-offset-3" onSubmit={this.handleSubmit.bind(this)}>
-                { this.state.noPostTitle ?
-                  <div className="form-group has-error has-feedback">
-                    <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title"/>
-                  </div> :
-                  <div className="form-group">
-                    <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title"/>
-                  </div>
-                }
-                <div className="form-group">
-                  <textarea className="form-control" rows="10" ref="contentInput" placeholder="Type to add the post content" aria-describedby="helpBlock"/>
-                  <span id="helpBlock" className="help-block">
-                    The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
-                  </span>
-                </div>
-                <div className="form-group pull-right">
-                  <button type="submit" className="btn btn-primary">send</button>
-                </div>
-              </form>
+              { this.renderNewPostForm() }
             </div> : ''
           }
         </header>
@@ -86,7 +90,7 @@ class App extends Component {
             No posts have been published yet.
           </div> :
           <ul className="list-group">
-            {this.renderPosts()}
+            { this.renderPosts() }
           </ul>
         }
 		  </div>

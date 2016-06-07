@@ -85,7 +85,7 @@ export default class Post extends Component {
     return (
       <form className="col-md-6 col-md-offset-3" onSubmit={ this.updateThisPost.bind(this) } >
         <div className="form-group">
-          <input className="form-control input-lg" type="text" ref="newTitleInput" value={ this.props.post.title } onChange={ this.handleChange }/>
+          <input className="form-control input-lg" type="text" ref="newTitleInput" value={ this.props.post.title } onChange={ this.handleChange } required />
         </div>
         <div className="form-group">
           <textarea className="form-control" rows="10" ref="newContentInput" value={ this.props.post.content } onChange={ this.handleChange }/>
