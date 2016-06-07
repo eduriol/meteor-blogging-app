@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
+import marked from 'marked';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import { Posts } from '../api/posts.js';
@@ -35,9 +36,12 @@ class App extends Component {
       this.setState({ noPostTitle: true });
     }
   }
+  
+  rawMarkup() {
+    return { __html: marked('### Prueba', {sanitize: true}) };
+  }
 
   renderNewPostForm() {
-    const divStyle = {borderStyle: 'solid', borderWidth: '5px', borderColor: 'red'};
     return (
       <form className="col-md-8 col-md-offset-2" onSubmit={this.handleSubmit.bind(this)}>
         <div className="form-group">
@@ -65,6 +69,17 @@ class App extends Component {
     );
   }
   
+  renderPostPreview() {
+    return (
+      <div>
+        {/*<h2 className="postTitle" onClick={ this.toggleIsContentHidden.bind(this) }>
+          { this.props.post.title } <small>(posted by { this.props.post.ownerName } on { this.props.post.createdAt.toDateString() })</small>
+        </h2>*/}
+        <p dangerouslySetInnerHTML={ this.rawMarkup() }/>
+      </div>
+    );
+  }
+  
   renderPosts() {
     return this.props.posts.map((post) => (
       <Post key={post._id} post={post}/>
@@ -82,6 +97,7 @@ class App extends Component {
           { this.props.currentUser ?
             <div className="row">
               { this.renderNewPostForm() }
+              { this.renderPostPreview() }
             </div> : ''
           }
         </header>
