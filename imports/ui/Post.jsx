@@ -39,8 +39,8 @@ export default class Post extends Component {
     this.setState({value: event.target.value});
   }
   
-  rawMarkup() {
-    return { __html: marked(this.props.post.content, {sanitize: true}) };
+  rawMarkup(text) {
+    return { __html: marked(text, {sanitize: true}) };
   }
   
   toggleIsContentHidden() {
@@ -111,7 +111,7 @@ export default class Post extends Component {
                 { this.props.post.title } <small>(posted by { this.props.post.ownerName } on { this.props.post.createdAt.toDateString() })</small>
               </h2>
               { !this.state.contentHidden ?
-                <p dangerouslySetInnerHTML={ this.rawMarkup() }/> : ''
+                <p dangerouslySetInnerHTML={ this.rawMarkup(this.props.post.content) }/> : ''
               }
             </div> :
             <div className="row">
