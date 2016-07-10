@@ -55,11 +55,11 @@ class App extends Component {
                   The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
                 </span>
               </div>
-              <div className="col-md-6 col-xs-6">
+              {/*<div className="col-md-6 col-xs-6">
                 <button type="button" className="btn btn-link pull-right">
                   show preview
                 </button>
-              </div>
+              </div>*/}
             </div>
         </div>
         <div className="form-group pull-right">
@@ -97,7 +97,7 @@ class App extends Component {
           { this.props.currentUser ?
             <div className="row">
               { this.renderNewPostForm() }
-              { this.renderPostPreview() }
+              {/*{ this.renderPostPreview() }*/}
             </div> : ''
           }
         </header>
