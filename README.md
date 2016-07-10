@@ -6,6 +6,7 @@ In order to install and run the platform, just follow the next steps:
 ```
 git clone https://github.com/eduriol/posteor.git
 cd posteor
+meteor npm install
 meteor
 ```
 To run the Mocha tests:
