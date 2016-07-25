@@ -1,5 +1,4 @@
 # Packages
 node_modules/
-.meteor/
 # Logs
 *.log
