@@ -35,23 +35,6 @@ export const insertPost = new ValidatedMethod({
 });
 
 Meteor.methods({
-  'posts.insert'(title, content) {
-    check(title, String);
-    check(content, String);
-
-    if (!this.userId) {
-      throw new Meteor.Error('not-authorized');
-    }
-
-    Posts.insert({
-      title,
-      content,
-      createdAt: new Date(),
-      isPublic: false,
-      ownerId: this.userId,
-      ownerName: Meteor.users.findOne(this.userId).username,
-    });
-  },
   'posts.remove'(postId) {
     check(postId, String);
 

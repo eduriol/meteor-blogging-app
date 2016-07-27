@@ -46,10 +46,24 @@ if (Meteor.isServer) {
 
       it('delete proper post among others', () => {
         const deletePost = Meteor.server.method_handlers['posts.remove'];
-        const insertPost = Meteor.server.method_handlers['posts.insert'];
+        const insertPost = Meteor.server.method_handlers['Posts.methods.insert'];
         const invocation = { userId };
-        insertPost.apply(invocation, ['test title 2', 'test content 2']);
-        insertPost.apply(invocation, ['test title 3', 'test content 3']);
+        insertPost.apply(invocation, [{
+          title: 'test title 2',
+          content: 'test content 2',
+          createdAt: new Date(),
+          isPublic: false,
+          ownerId: userId,
+          ownerName: 'jdoe',
+        }]);
+        insertPost.apply(invocation, [{
+          title: 'test title 3',
+          content: 'test content 3',
+          createdAt: new Date(),
+          isPublic: false,
+          ownerId: userId,
+          ownerName: 'jdoe',
+        }]);
         const postToDelete = Posts.findOne({ title: 'test title 2' });
         deletePost.apply(invocation, [postToDelete._id]);
         assert.equal(Posts.find({ title: 'test title' }).count(), 1);
