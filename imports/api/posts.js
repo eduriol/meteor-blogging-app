@@ -37,13 +37,13 @@ export const insertPost = new ValidatedMethod({
 export const removePost = new ValidatedMethod({
   name: 'Posts.methods.remove',
   validate: new SimpleSchema({
-    postId: {type: String},
+    postId: { type: String },
   }).validator(),
   run({ postId }) {
     if (this.userId !== Posts.findOne(postId).ownerId) {
       throw new Meteor.Error('not-authorized');
     }
-    Posts.remove(postId);    
+    Posts.remove(postId);
   },
 });
 
