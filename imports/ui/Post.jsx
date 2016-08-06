@@ -16,7 +16,8 @@ export default class Post extends Component {
   }
 
   deleteThisPost() {
-    Meteor.call('posts.remove', this.props.post._id);
+    post = { postId: this.props.post._id };
+    Meteor.call('Posts.methods.remove', post);
   }
   
   toggleIsPublic() {

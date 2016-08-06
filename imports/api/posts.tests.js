@@ -26,18 +26,22 @@ if (Meteor.isServer) {
       });
 
       it('can delete owned post', () => {
-        const deletePost = Meteor.server.method_handlers['posts.remove'];
+        const deletePost = Meteor.server.method_handlers['Posts.methods.remove'];
         const invocation = { userId };
-        deletePost.apply(invocation, [post]);
+        deletePost.apply(invocation, [{
+          postId: post,
+        }]);
         assert.equal(Posts.find().count(), 0);
       });
 
       it('cannot delete other\'s post', () => {
-        const deletePost = Meteor.server.method_handlers['posts.remove'];
+        const deletePost = Meteor.server.method_handlers['Posts.methods.remove'];
         const invocation = { otherUserId };
         assert.throws(
           () => {
-            deletePost.apply(invocation, [post]);
+            deletePost.apply(invocation, [{
+              postId: post,
+            }]);
           },
           Meteor.Error,
           'not-authorized'
@@ -45,7 +49,7 @@ if (Meteor.isServer) {
       });
 
       it('delete proper post among others', () => {
-        const deletePost = Meteor.server.method_handlers['posts.remove'];
+        const deletePost = Meteor.server.method_handlers['Posts.methods.remove'];
         const insertPost = Meteor.server.method_handlers['Posts.methods.insert'];
         const invocation = { userId };
         insertPost.apply(invocation, [{
@@ -65,7 +69,9 @@ if (Meteor.isServer) {
           ownerName: 'jdoe',
         }]);
         const postToDelete = Posts.findOne({ title: 'test title 2' });
-        deletePost.apply(invocation, [postToDelete._id]);
+        deletePost.apply(invocation, [{
+          postId: postToDelete._id,
+        }]);
         assert.equal(Posts.find({ title: 'test title' }).count(), 1);
         assert.equal(Posts.find({ title: 'test title 2' }).count(), 0);
         assert.equal(Posts.find({ title: 'test title 3' }).count(), 1);
