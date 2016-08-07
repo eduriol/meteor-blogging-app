@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import marked from 'marked';
 
 import ModalConfirmation from './ModalConfirmation.jsx';
+import { removePost, updatePost, setIsPublic } from '../api/posts.js';
 
 export default class Post extends Component {
   
@@ -16,15 +17,15 @@ export default class Post extends Component {
   }
 
   deleteThisPost() {
-    Meteor.call('Posts.methods.remove', { postId: this.props.post._id });
+    removePost.call({ postId: this.props.post._id });
   }
   
   toggleIsPublic() {
-    Meteor.call('Posts.methods.setIsPublic', {
+    setIsPublic.call({
       postId: this.props.post._id,
       isPublicPost: !this.props.post.isPublic,
-    })
-  };
+    });
+  }
   
   toggleEditMode() {
     this.setState({ edit: !this.state.edit });
@@ -32,7 +33,7 @@ export default class Post extends Component {
   
   updateThisPost(event) {
     event.preventDefault();
-    Meteor.call('Posts.methods.update', {
+    updatePost.call({
       postId: this.props.post._id,
       newTitle: ReactDOM.findDOMNode(this.refs.newTitleInput).value.trim(),
       newContent: ReactDOM.findDOMNode(this.refs.newContentInput).value.trim(),

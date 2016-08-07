@@ -5,9 +5,9 @@ import marked from 'marked';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import { Posts } from '../api/posts.js';
-
 import Post from './Post.jsx';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
+import { insertPost } from '../api/posts.js';
 
 class App extends Component {
   
@@ -25,7 +25,7 @@ class App extends Component {
         ownerName: Meteor.users.findOne(Meteor.userId()).username,
       };
       
-      Meteor.call('Posts.methods.insert', newPost, (error) => {
+      insertPost.call(newPost, (error) => {
         if (!error) {
           ReactDOM.findDOMNode(this.refs.titleInput).value = '';
           ReactDOM.findDOMNode(this.refs.contentInput).value = '';    
