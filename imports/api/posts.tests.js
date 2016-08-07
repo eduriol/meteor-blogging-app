@@ -130,19 +130,27 @@ if (Meteor.isServer) {
       });
 
       it('can edit owned post', () => {
-        const updatePost = Meteor.server.method_handlers['posts.update'];
+        const updatePost = Meteor.server.method_handlers['Posts.methods.update'];
         const invocation = { userId };
-        updatePost.apply(invocation, [post, 'updated test title', 'updated test content']);
+        updatePost.apply(invocation, [{
+          postId: post,
+          newTitle: 'updated test title',
+          newContent: 'updated test content',
+        }]);
         assert.equal(Posts.findOne(post).title, 'updated test title');
         assert.equal(Posts.findOne(post).content, 'updated test content');
       });
 
       it('cannot edit other\'s post', () => {
-        const updatePost = Meteor.server.method_handlers['posts.update'];
+        const updatePost = Meteor.server.method_handlers['Posts.methods.update'];
         const invocation = { otherUserId };
         assert.throws(
           () => {
-            updatePost.apply(invocation, [post, 'test title', 'test content']);
+            updatePost.apply(invocation, [{
+              postId: post,
+              newTitle: 'test title',
+              newContent: 'test content',
+            }]);
           },
           Meteor.Error,
           'not-authorized'

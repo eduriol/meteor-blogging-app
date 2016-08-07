@@ -16,8 +16,7 @@ export default class Post extends Component {
   }
 
   deleteThisPost() {
-    post = { postId: this.props.post._id };
-    Meteor.call('Posts.methods.remove', post);
+    Meteor.call('Posts.methods.remove', { postId: this.props.post._id });
   }
   
   toggleIsPublic() {
@@ -25,15 +24,17 @@ export default class Post extends Component {
   }
   
   toggleEditMode() {
-    this.setState({edit: !this.state.edit});
+    this.setState({ edit: !this.state.edit });
   }
   
   updateThisPost(event) {
     event.preventDefault();
-    const newTitle = ReactDOM.findDOMNode(this.refs.newTitleInput).value.trim();
-    const newContent = ReactDOM.findDOMNode(this.refs.newContentInput).value.trim();
-    Meteor.call('posts.update', this.props.post._id, newTitle, newContent);
-    this.setState({edit: false, contentHidden: false});
+    Meteor.call('Posts.methods.update', {
+      postId: this.props.post._id,
+      newTitle: ReactDOM.findDOMNode(this.refs.newTitleInput).value.trim(),
+      newContent: ReactDOM.findDOMNode(this.refs.newContentInput).value.trim(),
+    });
+    this.setState({ edit: false, contentHidden: false });
   }
   
   handleChange(event) {

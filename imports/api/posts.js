@@ -47,6 +47,22 @@ export const removePost = new ValidatedMethod({
   },
 });
 
+export const updatePost = new ValidatedMethod({
+  name: 'Posts.methods.update',
+  validate: new SimpleSchema({
+    postId: { type: String },
+    newTitle: { type: String },
+    newContent: { type: String },
+  }).validator(),
+  run (updatedPost) {
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    Posts.update(updatedPost.postId, { $set: { title: updatedPost.newTitle, content: updatedPost.newContent } });  
+  }
+})
+
 Meteor.methods({
   'posts.setIsPublic'(postId, setIsPublic) {
     check(postId, String);
@@ -57,16 +73,5 @@ Meteor.methods({
     }
 
     Posts.update(postId, { $set: { isPublic: setIsPublic } });
-  },
-  'posts.update'(postId, newTitle, newContent) {
-    check(postId, String);
-    check(newTitle, String);
-    check(newContent, String);
-
-    if (! this.userId) {
-      throw new Meteor.Error('not-authorized');
-    }
-
-    Posts.update(postId, { $set: { title: newTitle, content: newContent } });
   },
 });
