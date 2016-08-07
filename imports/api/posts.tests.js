@@ -78,18 +78,18 @@ if (Meteor.isServer) {
       });
 
       it('can make public owned post', () => {
-        const makePublic = Meteor.server.method_handlers['posts.setIsPublic'];
+        const makePublic = Meteor.server.method_handlers['Posts.methods.setIsPublic'];
         const invocation = { userId };
-        makePublic.apply(invocation, [post, true]);
+        makePublic.apply(invocation, [{ postId: post, isPublicPost: true }]);
         assert.equal(Posts.findOne(post).isPublic, true);
       });
 
       it('cannot make public other\'s post', () => {
-        const makePublic = Meteor.server.method_handlers['posts.setIsPublic'];
+        const makePublic = Meteor.server.method_handlers['Posts.methods.setIsPublic'];
         const invocation = { otherUserId };
         assert.throws(
           () => {
-            makePublic.apply(invocation, [post, true]);
+            makePublic.apply(invocation, [{ postId: post, isPublicPost: true }]);
           },
           Meteor.Error,
           'not-authorized'

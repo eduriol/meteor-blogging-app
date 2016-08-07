@@ -20,8 +20,11 @@ export default class Post extends Component {
   }
   
   toggleIsPublic() {
-    Meteor.call('posts.setIsPublic', this.props.post._id, !this.props.post.isPublic);
-  }
+    Meteor.call('Posts.methods.setIsPublic', {
+      postId: this.props.post._id,
+      isPublicPost: !this.props.post.isPublic,
+    })
+  };
   
   toggleEditMode() {
     this.setState({ edit: !this.state.edit });

@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { check } from 'meteor/check';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
@@ -54,24 +53,29 @@ export const updatePost = new ValidatedMethod({
     newTitle: { type: String },
     newContent: { type: String },
   }).validator(),
-  run (updatedPost) {
+  run(updatedPost) {
     if (! this.userId) {
       throw new Meteor.Error('not-authorized');
     }
 
-    Posts.update(updatedPost.postId, { $set: { title: updatedPost.newTitle, content: updatedPost.newContent } });  
-  }
-})
+    Posts.update(updatedPost.postId, { $set: {
+      title: updatedPost.newTitle,
+      content: updatedPost.newContent,
+    } });
+  },
+});
 
-Meteor.methods({
-  'posts.setIsPublic'(postId, setIsPublic) {
-    check(postId, String);
-    check(setIsPublic, Boolean);
-
+export const setIsPublic = new ValidatedMethod({
+  name: 'Posts.methods.setIsPublic',
+  validate: new SimpleSchema({
+    postId: { type: String },
+    isPublicPost: { type: Boolean },
+  }).validator(),
+  run({ postId, isPublicPost }) {
     if (this.userId !== Posts.findOne(postId).ownerId) {
       throw new Meteor.Error('not-authorized');
     }
 
-    Posts.update(postId, { $set: { isPublic: setIsPublic } });
+    Posts.update(postId, { $set: { isPublic: isPublicPost } });
   },
 });
