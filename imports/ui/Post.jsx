@@ -53,7 +53,7 @@ export default class Post extends Component {
     this.setState({contentHidden: !this.state.contentHidden});
   }
   
-  renderModal() {
+  renderDeletionModal() {
     return (
       <ModalConfirmation
         title="Confirm deletion"
@@ -62,9 +62,23 @@ export default class Post extends Component {
         onConfirm={ this.deleteThisPost.bind(this) }
         confirmLabel="Delete"
         buttonClass="btn btn-danger"
-        modalId={ "modalConfirmation".concat(this.props.post._id) }
-      />      
+        modalId={ "modalDeletionConfirmation".concat(this.props.post._id) }
+      />  
     );
+  }
+
+  renderEditingModal() {
+    return(
+      <ModalConfirmation
+        title="Exit editing"
+        body="Do you really want to exit the edition of this post? Unsaved changes will be lose."
+        cancelLabel="Get me back"
+        onConfirm={ this.toggleEditMode.bind(this) }
+        confirmLabel="Exit and lose changes"
+        buttonClass="btn btn-danger"
+        modalId={ "modalEditingConfirmation".concat(this.props.post._id) }
+      />
+    )
   }
   
   renderPostButtons() {
@@ -73,7 +87,7 @@ export default class Post extends Component {
         <button type="button" className="btn btn-link gray" onClick={ this.toggleEditMode.bind(this) }>
           <span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
         </button>
-        <button type="button" className="btn btn-link gray" data-toggle="modal" data-target={"#modalConfirmation".concat(this.props.post._id)}>
+        <button type="button" className="btn btn-link gray" data-toggle="modal" data-target={"#modalDeletionConfirmation".concat(this.props.post._id)}>
           <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
         </button>
         <label className="checkbox-inline">
@@ -98,7 +112,7 @@ export default class Post extends Component {
         </div>
         <div className="btn-toolbar pull-right">
           <button type="submit" className="btn btn-primary">save</button>
-          <button type="button" className="btn btn-default" onClick={ this.toggleEditMode.bind(this) }>cancel</button>
+          <button type="button" className="btn btn-default" data-toggle="modal" data-target={"#modalEditingConfirmation".concat(this.props.post._id)} >cancel</button>
         </div>
       </form>
     );
@@ -107,7 +121,8 @@ export default class Post extends Component {
   render() {
     return (
         <li className="list-group-item">
-          { this.renderModal() }
+          { this.renderDeletionModal() }
+          { this.renderEditingModal() }
           { !this.state.edit ?
             <div>
               { (Meteor.userId() === this.props.post.ownerId) ?
