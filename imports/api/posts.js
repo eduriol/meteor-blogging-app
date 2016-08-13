@@ -57,7 +57,6 @@ export const updatePost = new ValidatedMethod({
     if (! this.userId) {
       throw new Meteor.Error('not-authorized');
     }
-
     Posts.update(updatedPost.postId, { $set: {
       title: updatedPost.newTitle,
       content: updatedPost.newContent,
@@ -75,7 +74,6 @@ export const setIsPublic = new ValidatedMethod({
     if (this.userId !== Posts.findOne(postId).ownerId) {
       throw new Meteor.Error('not-authorized');
     }
-
     Posts.update(postId, { $set: { isPublic: isPublicPost } });
   },
 });

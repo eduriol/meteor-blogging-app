@@ -42,7 +42,7 @@ export default class Post extends Component {
   }
   
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
   
   rawMarkup(text) {
@@ -50,7 +50,7 @@ export default class Post extends Component {
   }
   
   toggleIsContentHidden() {
-    this.setState({contentHidden: !this.state.contentHidden});
+    this.setState({ contentHidden: !this.state.contentHidden });
   }
   
   renderDeletionModal() {

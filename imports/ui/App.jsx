@@ -10,6 +10,13 @@ import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 import { insertPost } from '../api/posts.js';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showPreview: false,
+    };
+  }
   
   handleSubmit(event) {
     event.preventDefault();
@@ -37,8 +44,12 @@ class App extends Component {
     }
   }
   
-  rawMarkup() {
-    return { __html: marked('### Prueba', {sanitize: true}) };
+  rawMarkup(text) {
+    return { __html: marked(text, {sanitize: true}) };
+  }
+
+  toggleShowPreview() {
+    this.setState({ showPreview: !this.state.showPreview });
   }
 
   renderNewPostForm() {
@@ -55,11 +66,11 @@ class App extends Component {
                   The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
                 </span>
               </div>
-              {/*<div className="col-md-6 col-xs-6">
-                <button type="button" className="btn btn-link pull-right">
+              <div className="col-md-6 col-xs-6">
+                <button type="button" className="btn btn-link pull-right" onClick={ this.toggleShowPreview.bind(this) }>
                   show preview
                 </button>
-              </div>*/}
+              </div>
             </div>
         </div>
         <div className="form-group pull-right">
@@ -71,11 +82,13 @@ class App extends Component {
   
   renderPostPreview() {
     return (
-      <div>
-        {/*<h2 className="postTitle" onClick={ this.toggleIsContentHidden.bind(this) }>
-          { this.props.post.title } <small>(posted by { this.props.post.ownerName } on { this.props.post.createdAt.toDateString() })</small>
-        </h2>*/}
-        <p dangerouslySetInnerHTML={ this.rawMarkup() }/>
+      <div className="col-md-8 col-md-offset-2">
+        <h2>
+          { ReactDOM.findDOMNode(this.refs.titleInput).value.trim() }
+        </h2>
+        <p dangerouslySetInnerHTML={
+          this.rawMarkup(ReactDOM.findDOMNode(this.refs.contentInput).value.trim())
+        }/>
       </div>
     );
   }
@@ -97,7 +110,9 @@ class App extends Component {
           { this.props.currentUser ?
             <div className="row">
               { this.renderNewPostForm() }
-              {/*{ this.renderPostPreview() }*/}
+              { this.state.showPreview ?
+                this.renderPostPreview() : ''
+              }
             </div> : ''
           }
         </header>
