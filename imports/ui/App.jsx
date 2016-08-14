@@ -14,10 +14,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showPreview: false,
+      noPostTitle: true,
+      showPreview: false
     };
   }
-  
+
   handleSubmit(event) {
     event.preventDefault();
     const newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
@@ -35,7 +36,8 @@ class App extends Component {
       insertPost.call(newPost, (error) => {
         if (!error) {
           ReactDOM.findDOMNode(this.refs.titleInput).value = '';
-          ReactDOM.findDOMNode(this.refs.contentInput).value = '';    
+          ReactDOM.findDOMNode(this.refs.contentInput).value = '';
+          this.setState({ noPostTitle: true, showPreview: false });    
         }
       });
     }
@@ -45,7 +47,17 @@ class App extends Component {
   }
   
   rawMarkup(text) {
-    return { __html: marked(text, {sanitize: true}) };
+    return { __html: marked(text, { sanitize: true }) };
+  }
+
+  setNoPostTitle() {
+    const newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
+    if (newTitle !== '') {
+      this.setState({ noPostTitle: false });
+    }
+    else {
+      this.setState({ noPostTitle: true });
+    }
   }
 
   toggleShowPreview() {
@@ -56,22 +68,38 @@ class App extends Component {
     return (
       <form className="col-md-8 col-md-offset-2" onSubmit={this.handleSubmit.bind(this)}>
         <div className="form-group">
-          <input className="form-control input-lg" type="text" ref="titleInput" placeholder="Type to add the post title" required />
+          <input
+            className="form-control input-lg"
+            type="text"
+            ref="titleInput"
+            placeholder="Type to add the post title"
+            onChange={ this.setNoPostTitle.bind(this) }
+            required
+          />
         </div>
         <div className="form-group">
           <textarea className="form-control" rows="10" ref="contentInput" placeholder="Type to add the post content" aria-describedby="helpBlock"/>
-            <div className="row">
-              <div className="col-md-6 col-xs-6">
-                <span id="helpBlock" className="help-block">
-                  The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
-                </span>
-              </div>
+          <div className="row">
+            <div className="col-md-6 col-xs-6">
+              <span id="helpBlock" className="help-block">
+                The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
+              </span>
+            </div>
+            { !this.state.noPostTitle ?
               <div className="col-md-6 col-xs-6">
                 <button type="button" className="btn btn-link pull-right" onClick={ this.toggleShowPreview.bind(this) }>
-                  show preview
+                  { !this.state.showPreview ?
+                    'show preview' : 'hide preview'
+                  }
                 </button>
-              </div>
-            </div>
+              </div> : ''
+            }
+          </div>
+          { this.state.showPreview ?
+            <div className="row">
+              { this.renderPostPreview() }        
+            </div> : ''
+          }
         </div>
         <div className="form-group pull-right">
           <button type="submit" className="btn btn-primary">send</button>
@@ -110,9 +138,6 @@ class App extends Component {
           { this.props.currentUser ?
             <div className="row">
               { this.renderNewPostForm() }
-              { this.state.showPreview ?
-                this.renderPostPreview() : ''
-              }
             </div> : ''
           }
         </header>
