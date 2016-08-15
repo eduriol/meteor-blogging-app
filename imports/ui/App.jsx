@@ -55,7 +55,7 @@ class App extends Component {
       this.setState({ noPostTitle: false });
     }
     else {
-      this.setState({ noPostTitle: true });
+      this.setState({ noPostTitle: true, showPreview: false });
     }
   }
 
