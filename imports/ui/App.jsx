@@ -51,8 +51,7 @@ class App extends Component {
   }
 
   setNoPostTitle() {
-    const newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
-    if (newTitle !== '') {
+    if (ReactDOM.findDOMNode(this.refs.titleInput).value.trim() !== '') {
       this.setState({ noPostTitle: false });
     }
     else {
@@ -62,6 +61,19 @@ class App extends Component {
 
   toggleShowPreview() {
     this.setState({ showPreview: !this.state.showPreview });
+  }
+
+  renderPostPreview() {
+    return (
+      <div className="col-md-8 col-md-offset-2">
+        <h2>
+          { ReactDOM.findDOMNode(this.refs.titleInput).value.trim() }
+        </h2>
+        <p dangerouslySetInnerHTML={
+          this.rawMarkup(ReactDOM.findDOMNode(this.refs.contentInput).value.trim())
+        }/>
+      </div>
+    );
   }
 
   renderNewPostForm() {
@@ -78,7 +90,14 @@ class App extends Component {
           />
         </div>
         <div className="form-group">
-          <textarea className="form-control" rows="10" ref="contentInput" placeholder="Type to add the post content" aria-describedby="helpBlock"/>
+          <textarea
+            className="form-control"
+            rows="10"
+            ref="contentInput"
+            placeholder="Type to add the post content"
+            aria-describedby="helpBlock"
+            onChange={ this.setNoPostTitle.bind(this) }
+          />
           <div className="row">
             <div className="col-md-6 col-xs-6">
               <span id="helpBlock" className="help-block">
@@ -107,20 +126,7 @@ class App extends Component {
       </form>  
     );
   }
-  
-  renderPostPreview() {
-    return (
-      <div className="col-md-8 col-md-offset-2">
-        <h2>
-          { ReactDOM.findDOMNode(this.refs.titleInput).value.trim() }
-        </h2>
-        <p dangerouslySetInnerHTML={
-          this.rawMarkup(ReactDOM.findDOMNode(this.refs.contentInput).value.trim())
-        }/>
-      </div>
-    );
-  }
-  
+    
   renderPosts() {
     return this.props.posts.map((post) => (
       <Post key={post._id} post={post}/>
