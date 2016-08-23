@@ -14,7 +14,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      noPostTitle: true,
+      showPreviewButton: false,
       showPreview: false
     };
   }
@@ -23,7 +23,6 @@ class App extends Component {
     event.preventDefault();
     const newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value.trim();
     if (newTitle !== '') {
-      this.setState({ noPostTitle: false });
       var newPost = {
         title: newTitle,
         content: ReactDOM.findDOMNode(this.refs.contentInput).value.trim(),
@@ -37,12 +36,9 @@ class App extends Component {
         if (!error) {
           ReactDOM.findDOMNode(this.refs.titleInput).value = '';
           ReactDOM.findDOMNode(this.refs.contentInput).value = '';
-          this.setState({ noPostTitle: true, showPreview: false });    
+          this.setState({ showPreviewButton: false, showPreview: false });    
         }
       });
-    }
-    else {
-      this.setState({ noPostTitle: true });
     }
   }
   
@@ -50,12 +46,10 @@ class App extends Component {
     return { __html: marked(text, { sanitize: true }) };
   }
 
-  setNoPostTitle() {
-    if (ReactDOM.findDOMNode(this.refs.titleInput).value.trim() !== '') {
-      this.setState({ noPostTitle: false });
-    }
-    else {
-      this.setState({ noPostTitle: true, showPreview: false });
+  handleTextareaChange() {
+    this.setState({ preview: this.refs.contentInput.value });
+    if (this.state.preview !== '') {
+      this.setState({ showPreviewButton: true });
     }
   }
 
@@ -67,10 +61,10 @@ class App extends Component {
     return (
       <div className="col-md-8 col-md-offset-2">
         <h2>
-          { ReactDOM.findDOMNode(this.refs.titleInput).value.trim() }
+          Post preview:
         </h2>
         <p dangerouslySetInnerHTML={
-          this.rawMarkup(ReactDOM.findDOMNode(this.refs.contentInput).value.trim())
+          this.rawMarkup(this.state.preview)
         }/>
       </div>
     );
@@ -85,7 +79,6 @@ class App extends Component {
             type="text"
             ref="titleInput"
             placeholder="Type to add the post title"
-            onChange={ this.setNoPostTitle.bind(this) }
             required
           />
         </div>
@@ -96,7 +89,7 @@ class App extends Component {
             ref="contentInput"
             placeholder="Type to add the post content"
             aria-describedby="helpBlock"
-            onChange={ this.setNoPostTitle.bind(this) }
+            onChange={ this.handleTextareaChange.bind(this) }
           />
           <div className="row">
             <div className="col-md-6 col-xs-6">
@@ -104,7 +97,7 @@ class App extends Component {
                 The post content should follow <a target="_blank" href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> syntax.
               </span>
             </div>
-            { !this.state.noPostTitle ?
+            { this.state.showPreviewButton ?
               <div className="col-md-6 col-xs-6">
                 <button type="button" className="btn btn-link pull-right" onClick={ this.toggleShowPreview.bind(this) }>
                   { !this.state.showPreview ?
