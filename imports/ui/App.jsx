@@ -31,7 +31,7 @@ class App extends Component {
         ownerId: Meteor.userId(),
         ownerName: Meteor.users.findOne(Meteor.userId()).username,
       };
-      
+
       insertPost.call(newPost, (error) => {
         if (!error) {
           ReactDOM.findDOMNode(this.refs.titleInput).value = '';
@@ -47,9 +47,13 @@ class App extends Component {
   }
 
   handleTextareaChange() {
-    this.setState({ preview: this.refs.contentInput.value });
-    if (this.state.preview !== '') {
+    let preview = ReactDOM.findDOMNode(this.refs.contentInput).value.trim();
+    this.setState({ preview: preview });
+    if (preview !== '') {
       this.setState({ showPreviewButton: true });
+    }
+    else {
+      this.setState({ showPreviewButton: false, showPreview: false });
     }
   }
 
@@ -60,9 +64,7 @@ class App extends Component {
   renderPostPreview() {
     return (
       <div className="col-md-8 col-md-offset-2">
-        <h2>
-          Post preview:
-        </h2>
+        <br/>
         <p dangerouslySetInnerHTML={
           this.rawMarkup(this.state.preview)
         }/>
@@ -72,7 +74,7 @@ class App extends Component {
 
   renderNewPostForm() {
     return (
-      <form className="col-md-8 col-md-offset-2" onSubmit={this.handleSubmit.bind(this)}>
+      <form className="col-md-8 col-md-offset-2" onSubmit={ this.handleSubmit.bind(this) }>
         <div className="form-group">
           <input
             className="form-control input-lg"
